@@ -1,0 +1,77 @@
+{
+  "Articles": {
+    "title": "Články",
+    "subtitle": "",
+    "item": "Článek"
+  },
+  "Attachments": {
+    "title": "Přílohy",
+    "subtitle": "",
+    "item": "Příloha"
+  },
+  "Categories": {
+    "title": "Kategorie",
+    "subtitle": "",
+    "item": "Kategorie"
+  },
+  "Dashboard": {
+    "title": "Vítej",
+    "subtitle": ""
+  },
+  "Error": {
+    "title": "Chyba",
+    "subtitle": ""
+  },
+  "Login": {
+    "title": "Přihlášení",
+    "subtitle": "Přihlášení do administrace"
+  },
+  "Members": {
+    "title": "Členové",
+    "subtitle": "",
+    "item": "Člen"
+  },
+  "Menu": {
+    "title": "Menu",
+    "subtitle": "",
+    "item": "Menu",
+    "itemItem": "Menu položka"
+  },
+  "Messages": {
+    "title": "Zprávy",
+    "subtitle": "",
+    "item": "Zpráva"
+  },
+  "Pages": {
+    "title": "Stránky",
+    "subtitle": "",
+    "item": "Stránka"
+  },
+  "PasswordRecovery": {
+    "title": "Obnova hesla",
+    "subtitle": ""
+  },
+  "Settings": {
+    "title": "Nastavení",
+    "subtitle": ""
+  },
+  "Tags": {
+    "title": "Tagy",
+    "subtitle": "",
+    "item": "Tag"
+  },
+  "Translations": {
+    "title": "Překlady",
+    "subtitle": "",
+    "item": "Překlad"
+  },
+  "Users": {
+    "title": "Uživatelé",
+    "subtitle": "",
+    "item": "Uživatel"
+  },
+  "Profile": {
+    "title": "Profile",
+    "subtitle": ""
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "button": {
+    "ok": "OK",
+    "theme": "Téma",
+    "menu": "Menu",
+    "create": "Vytvořit",
+    "update": "Aktualizovat",
+    "reset": "Reset",
+    "cancel": "Zrušit",
+    "close": "Zavřít"
+  },
+  "theme": {
+    "light": "Světlé",
+    "dark": "Tmavé",
+    "system": "Systémové"
+  },
+  "route": {
+    "dashboard": "Nástěnka",
+    "settings": "Nastavení",
+    "articles": "Články",
+    "attachments": "Přílohy",
+    "categories": "Kategorie",
+    "tags": "Tagy",
+    "members": "Členové",
+    "pages": "Stránky",
+    "users": "Uživatelé",
+    "translations": "Překlady",
+    "menu": "Menu",
+    "messages": "Zprávy",
+    "profile": "Profil"
+  },
+  "panels": {
+    "client": "Klient",
+    "global": "Obecné",
+    "language": "Jazyky",
+    "maintenance": "Údržba"
+  }
+}

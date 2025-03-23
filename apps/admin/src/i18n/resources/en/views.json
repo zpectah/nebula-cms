@@ -1,0 +1,77 @@
+{
+  "Articles": {
+    "title": "Articles",
+    "subtitle": "",
+    "item": "Article"
+  },
+  "Attachments": {
+    "title": "Attachments",
+    "subtitle": "",
+    "item": "Attachment"
+  },
+  "Categories": {
+    "title": "Categories",
+    "subtitle": "",
+    "item": "Category"
+  },
+  "Dashboard": {
+    "title": "Welcome",
+    "subtitle": ""
+  },
+  "Error": {
+    "title": "Error",
+    "subtitle": ""
+  },
+  "Login": {
+    "title": "Login",
+    "subtitle": "Login to administration"
+  },
+  "Members": {
+    "title": "Members",
+    "subtitle": "",
+    "item": "Member"
+  },
+  "Menu": {
+    "title": "Menu",
+    "subtitle": "",
+    "item": "Menu",
+    "itemItem": "Menu item"
+  },
+  "Messages": {
+    "title": "Messages",
+    "subtitle": "",
+    "item": "Message"
+  },
+  "Pages": {
+    "title": "Pages",
+    "subtitle": "",
+    "item": "Page"
+  },
+  "PasswordRecovery": {
+    "title": "Password recovery",
+    "subtitle": ""
+  },
+  "Settings": {
+    "title": "Settings",
+    "subtitle": ""
+  },
+  "Tags": {
+    "title": "Tags",
+    "subtitle": "",
+    "item": "Tag"
+  },
+  "Translations": {
+    "title": "Translations",
+    "subtitle": "",
+    "item": "Translation"
+  },
+  "Users": {
+    "title": "Users",
+    "subtitle": "",
+    "item": "User"
+  },
+  "Profile": {
+    "title": "Profile",
+    "subtitle": ""
+  }
+}

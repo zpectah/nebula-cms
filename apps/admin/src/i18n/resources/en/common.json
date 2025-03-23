@@ -1,0 +1,38 @@
+{
+  "button": {
+    "ok": "OK",
+    "theme": "Theme",
+    "menu": "Menu",
+    "create": "Create",
+    "update": "Update",
+    "reset": "Reset",
+    "cancel": "Cancel",
+    "close": "Close"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "route": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "articles": "Articles",
+    "attachments": "Attachments",
+    "categories": "Categories",
+    "tags": "Tags",
+    "members": "Members",
+    "pages": "Pages",
+    "users": "Users",
+    "translations": "Translations",
+    "menu": "Menu",
+    "messages": "Messages",
+    "profile": "Profile"
+  },
+  "panels": {
+    "client": "Client",
+    "global": "Global",
+    "language": "Language",
+    "maintenance": "Maintenance"
+  }
+}
