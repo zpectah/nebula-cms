@@ -1,6 +1,7 @@
 export * from './Breadcrumbs';
 export * from './button';
 export * from './Card';
+export * from './DataTable';
 export * from './DetailDrawerForm';
 export * from './Footer';
 export * from './form';
@@ -9,5 +10,6 @@ export * from './input';
 export * from './layout';
 export * from './LocalesToggle';
 export * from './navigation';
+export * from './preloader';
 export * from './ThemeToggle';
 export * from './UserMenu';

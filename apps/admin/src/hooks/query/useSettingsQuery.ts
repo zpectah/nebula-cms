@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { API_URL_SETTINGS } from '../constants';
+import { API_URL_SETTINGS } from '../../constants';
 
 const QUERY_KEY_BASE = 'settings';
 

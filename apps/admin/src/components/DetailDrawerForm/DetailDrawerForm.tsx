@@ -2,10 +2,21 @@ import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { styled, Drawer, Stack, Button, IconButton, Typography, StackProps, DrawerProps } from '@mui/material';
+import {
+  styled,
+  Drawer,
+  Stack,
+  Button,
+  IconButton,
+  Typography,
+  Skeleton,
+  StackProps,
+  DrawerProps,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { WithChildren } from '@common';
 import { ControlledForm, ControlledFormProps } from '../form';
+import { PreloaderBase } from '../preloader';
 
 interface DetailDrawerFormProps<T extends FieldValues> extends WithChildren {
   formProps: Omit<ControlledFormProps<T>, 'children'>;
@@ -15,6 +26,7 @@ interface DetailDrawerFormProps<T extends FieldValues> extends WithChildren {
   subtitle?: string;
   actions?: ReactNode;
   drawerProps?: Partial<DrawerProps>;
+  isLoading?: boolean;
 }
 
 const Container = styled(Stack)(({ theme }) => ({
@@ -46,6 +58,7 @@ const DetailDrawerForm = <T extends FieldValues>({
   subtitle,
   actions,
   drawerProps,
+  isLoading,
 }: DetailDrawerFormProps<T>) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -76,6 +89,7 @@ const DetailDrawerForm = <T extends FieldValues>({
         <Container>
           <Header {...barProps}>
             <Stack>
+              {isLoading && <Skeleton variant="text" width={350} sx={{ fontSize: '1.6rem' }} />}
               <Typography variant="h3">{title}</Typography>
               <Typography variant="subtitle2">{subtitle}</Typography>
             </Stack>
@@ -83,19 +97,21 @@ const DetailDrawerForm = <T extends FieldValues>({
               <CloseIcon />
             </IconButton>
           </Header>
-          <Content gap={2}>{children}</Content>
+          <Content gap={2}>{isLoading ? <PreloaderBase /> : children}</Content>
           <Footer {...barProps}>
             <Stack direction="row" gap={2}>
-              <Button type="submit" variant="contained">
+              <Button type="submit" variant="contained" disabled={isLoading}>
                 {isNew ? t('button.create') : t('button.update')}
               </Button>
-              <Button onClick={() => form?.reset()} variant="outlined">
+              <Button onClick={() => form?.reset()} variant="outlined" disabled={isLoading}>
                 {t('button.reset')}
               </Button>
               {actions}
             </Stack>
             <Stack>
-              <Button onClick={closeHandler}>{t('button.cancel')}</Button>
+              <Button onClick={closeHandler} disabled={isLoading}>
+                {t('button.cancel')}
+              </Button>
             </Stack>
           </Footer>
         </Container>

@@ -1,1 +1,1 @@
-export * from './useSettingsQuery';
+export * from './query';
