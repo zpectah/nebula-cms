@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, ButtonProps } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-export type AddButtonProps = Partial<Omit<ButtonProps, 'variant' | 'color' | 'ref'>> & {
+type AddButtonProps = Partial<Omit<ButtonProps, 'variant' | 'color' | 'ref'>> & {
   route: string;
 };
 

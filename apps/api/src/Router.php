@@ -61,6 +61,7 @@ class Router {
             $response = [
               'id' => $id,
               'name' => 'article-name-' . $id,
+              'type' => 'default',
               'locale' => [
                 'en' => [
                   'title' => "Article title EN $id",
@@ -86,18 +87,19 @@ class Router {
               $articles[] = [
                 'id' => $i,
                 'name' => "article-name-$i",
-                'locale' => [
-                  'en' => [
-                    'title' => "Article title EN $i",
-                    'description' => "Article description EN $i",
-                    'content' => "Article content EN $i",
-                  ],
-                  'cs' => [
-                    'title' => "Article title CS $i",
-                    'description' => "Article description CS $i",
-                    'content' => "Article content CS $i",
-                  ],
-                ],
+                'type' => 'default',
+//                'locale' => [
+//                  'en' => [
+//                    'title' => "Article title EN $i",
+//                    'description' => "Article description EN $i",
+//                    'content' => "Article content EN $i",
+//                  ],
+//                  'cs' => [
+//                    'title' => "Article title CS $i",
+//                    'description' => "Article description CS $i",
+//                    'content' => "Article content CS $i",
+//                  ],
+//                ],
                 'active' => 1,
                 'deleted' => 0,
                 'created' => $now,

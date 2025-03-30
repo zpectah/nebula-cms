@@ -1,4 +1,3 @@
-export interface IArticlesDetailForm {
-  type: string;
-  name: string;
-}
+import { ArticlesDetail } from '@core';
+
+export interface IArticlesDetailForm extends ArticlesDetail {}

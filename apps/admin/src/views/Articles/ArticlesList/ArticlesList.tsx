@@ -14,6 +14,7 @@ const ArticlesList = () => {
       rows={items ?? []}
       columns={[
         { id: 'name', label: 'Name', isTitle: true },
+        { id: 'type', label: 'Type' },
         { id: 'updated', label: 'Updated' },
       ]}
       urlPrefix={routes.articles.path}

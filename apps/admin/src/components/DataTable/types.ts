@@ -13,7 +13,7 @@ export interface DataTableColumn<T extends ItemBase> {
 
 export interface DataTableProps<T extends ItemBase> {
   rows: T[];
+  columns: DataTableColumn<T>[];
   urlPrefix: string;
   isLoading?: boolean;
-  columns: DataTableColumn<T>[];
 }

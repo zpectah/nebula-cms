@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Articles, ArticlesItem } from '@core';
+import { Articles, ArticlesDetail } from '@core';
 import { API_URL_ARTICLES } from '../../constants';
 import { newItemKey } from '../../enums';
 
@@ -12,7 +12,7 @@ export const useArticlesQuery = (id?: string) => {
     queryFn: () => axios.get(API_URL_ARTICLES).then((response) => response.data),
   });
 
-  const articlesDetailQuery = useQuery<unknown, unknown, ArticlesItem>({
+  const articlesDetailQuery = useQuery<unknown, unknown, ArticlesDetail>({
     queryKey: [`${QUERY_KEY_BASE}-${id}`],
     queryFn: () => axios.get(`${API_URL_ARTICLES}/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,

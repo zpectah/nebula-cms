@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import config from '../../../config';
 import { DetailDrawerForm, Input, FormField } from '../../../components';
@@ -14,11 +14,36 @@ const ArticlesDetailForm = () => {
   const { articlesDetailQuery } = useArticlesQuery(id);
 
   const { routes } = config;
-  const { formState } = form;
+  const { formState, setValue, reset } = form;
   const { data, isLoading } = articlesDetailQuery;
 
   const drawerTitle = useMemo(() => {
-    return id === newItemKey ? 'New article' : data?.title;
+    return id === newItemKey ? 'New article' : data?.name;
+  }, [id, data]);
+
+  useEffect(() => {
+    if (id === newItemKey) {
+      reset({
+        name: '',
+        type: ArticlesDetailFormDefaults.type,
+        locale: {
+          en: {
+            title: '',
+            description: '',
+            content: '',
+          },
+          cs: {
+            title: '',
+            description: '',
+            content: '',
+          },
+        },
+        active: true,
+        deleted: false,
+      });
+    } else if (data) {
+      reset(data);
+    }
   }, [id, data]);
 
   return (
@@ -31,6 +56,7 @@ const ArticlesDetailForm = () => {
       }}
       title={drawerTitle}
       isLoading={isLoading}
+      isDebug
     >
       <div>
         <code>{JSON.stringify(data, null, 2)}</code>
