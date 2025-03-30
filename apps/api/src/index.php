@@ -1,5 +1,7 @@
 <?php
 
+const PATH_ROOT = './';
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   header('Access-Control-Allow-Origin: *');
   header('Access-Control-Allow-Methods: GET, DELETE, PUT, PATCH, UPDATE, OPTIONS');
@@ -19,45 +21,13 @@ if (isset($_SERVER['HTTP_CONTENT_ENCODING']) && $_SERVER['HTTP_CONTENT_ENCODING'
   header('Content-Encoding: gzip');
 }
 
-const PATH_ROOT = './';
+require PATH_ROOT . 'Router.php';
 
+$router = new Router();
 
-$url = $_SERVER['REQUEST_URI'] ?? '';
-$url_attributes = array_values(array_filter(explode('/', $url)));
-
-// Parsed attributes
-$attr_env = $url_attributes[0] ?? null;
-$attr_model = $url_attributes[1] ?? null;
-$attr_mdf_1 = $url_attributes[2] ?? null;
-$attr_mdf_2 = $url_attributes[3] ?? null;
-$attr_mdf_3 = $url_attributes[4] ?? null;
-
-// Default response
-$response = [
-  ...$url_attributes
-];
-
-// Mock data
-if ($attr_env === 'private') {
-
-  if ($attr_model === 'settings') {
-    $response = [
-      'project_name' => 'Project name',
-      'project_description' => 'Project description ...',
-    ];
-  }
-
-} else if ($attr_env === 'public') {
-  $response = [
-    'a' => 1,
-    'b' => 2,
-  ];
-}
-
-// Print JSON result
 print_r(
   json_encode(
-    $response,
+    $router -> resolveRequest(),
     JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
   )
 );

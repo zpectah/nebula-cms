@@ -1,6 +1,5 @@
-import { useMemo, useState, MouseEvent, ChangeEvent, Key, ReactNode } from 'react';
+import { Key } from 'react';
 import { Link } from 'react-router-dom';
-import { alpha } from '@mui/material/styles';
 import { visuallyHidden } from '@mui/utils';
 import {
   Box,
@@ -18,87 +17,29 @@ import {
   Checkbox,
   IconButton,
   Tooltip,
-  FormControlLabel,
-  Switch,
+  Button,
+  Stack,
 } from '@mui/material';
 import { ItemBase } from '@common';
-import { DataTableColumn, DataTableProps } from './types';
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-type Order = 'asc' | 'desc';
-
-function getComparator<T, K extends keyof T>(order: Order, orderBy: K): (a: T, b: T) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
+import { orderKeys } from './enums';
+import { DataTableProps } from './types';
+import { useDataTable } from './useDataTable';
 
 const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isLoading }: DataTableProps<T>) => {
-  const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof T>('id');
-  const [selected, setSelected] = useState<readonly number[]>([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleRequestSort = (event: MouseEvent<unknown>, property: keyof T) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const createSortHandler = (property: keyof ItemBase) => (event: MouseEvent<unknown>) => {
-    handleRequestSort(event, property);
-  };
-
-  const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event: MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-  const visibleRows = useMemo(
-    () => [...rows].sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage, rows]
-  );
+  const {
+    visibleRows,
+    emptyRows,
+    order,
+    orderBy,
+    selected,
+    page,
+    rowsPerPage,
+    onRowsPerChange,
+    onPageChange,
+    onSelect,
+    onSelectAll,
+    onSort,
+  } = useDataTable<T>(rows);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -139,7 +80,7 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
                     color="primary"
                     indeterminate={selected.length > 0 && selected.length < rows.length}
                     checked={rows.length > 0 && selected.length === rows.length}
-                    onChange={handleSelectAllClick}
+                    onChange={onSelectAll}
                     slotProps={{
                       input: {
                         'aria-label': 'select all desserts',
@@ -156,19 +97,19 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
                   >
                     <TableSortLabel
                       active={orderBy === column.id}
-                      direction={orderBy === column.id ? order : 'asc'}
-                      onClick={createSortHandler(column.id as keyof ItemBase)}
+                      direction={orderBy === column.id ? order : orderKeys.asc}
+                      onClick={onSort(column.id as keyof ItemBase)}
                     >
                       {column.label}
                       {orderBy === column.id ? (
                         <Box component="span" sx={visuallyHidden}>
-                          {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                          {order === orderKeys.desc ? 'sorted descending' : 'sorted ascending'}
                         </Box>
                       ) : null}
                     </TableSortLabel>
                   </TableCell>
                 ))}
-                <TableCell align="right">Akce...</TableCell>
+                <TableCell align="right">Akce</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -179,18 +120,17 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.id}
                     selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
+                        onClick={(event) => onSelect(event, row.id)}
                         slotProps={{
                           input: {
                             'aria-labelledby': labelId,
@@ -212,7 +152,14 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
                     ))}
 
                     <TableCell align="right">
-                      <button>detail</button>
+                      <Stack direction="row" gap={1} sx={{ display: 'inline-flex' }}>
+                        <Button variant="outlined" color="error" size="small">
+                          Delete
+                        </Button>
+                        <Button component={Link} to={`${urlPrefix}/${row.id}`} variant="outlined" size="small">
+                          Detail
+                        </Button>
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 );
@@ -235,8 +182,8 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+          onPageChange={onPageChange}
+          onRowsPerPageChange={onRowsPerChange}
         />
       </Paper>
     </Box>
