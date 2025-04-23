@@ -11,5 +11,19 @@
       "maxNumber": "The value is above the maximum allowed value.",
       "notNumber": "Value must be a number"
     }
+  },
+  "label": {
+    "name": "Název",
+    "type": "Typ",
+    "title": "Titulek",
+    "description": "Popisek",
+    "content": "Obsah",
+    "active": "Aktivní",
+    "deleted": "Smazané"
+  },
+  "placeholder": {},
+  "options": {
+    "default": "Výchozí",
+    "event": "Událost"
   }
 }

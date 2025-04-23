@@ -3,6 +3,7 @@ export * from './button';
 export * from './Card';
 export * from './DataTable';
 export * from './DetailDrawerForm';
+export * from './DetailLocaleToggle';
 export * from './Footer';
 export * from './form';
 export * from './Header';

@@ -8,7 +8,6 @@ export interface ArticlesItem extends ItemBase {
 }
 
 export interface ArticlesDetail extends ArticlesItem {
-  type: ArticlesType;
   locale: {
     [k: string]: {
       title: string;

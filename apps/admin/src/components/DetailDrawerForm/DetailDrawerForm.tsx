@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -68,6 +68,7 @@ const DetailDrawerForm = <T extends FieldValues>({
   const closeHandler = () => navigate(root);
 
   const isNew = id === 'new';
+  const isValid = !!form?.formState.isValid;
 
   const barProps: Partial<StackProps> = {
     direction: 'row',
@@ -75,14 +76,6 @@ const DetailDrawerForm = <T extends FieldValues>({
     justifyContent: 'space-between',
     gap: 2,
   };
-
-  useEffect(() => {
-    const errors = form?.formState.errors;
-
-    if (isDebug && errors) {
-      console.warn(errors);
-    }
-  }, [isDebug, form]);
 
   return (
     <Drawer
@@ -110,7 +103,7 @@ const DetailDrawerForm = <T extends FieldValues>({
           <Content gap={2}>{isLoading ? <PreloaderBase /> : children}</Content>
           <Footer {...barProps}>
             <Stack direction="row" gap={2}>
-              <Button type="submit" variant="contained" disabled={isLoading}>
+              <Button type="submit" variant="contained" disabled={isLoading || !isValid}>
                 {isNew ? t('button.create') : t('button.update')}
               </Button>
               <Button onClick={() => form?.reset()} variant="outlined" disabled={isLoading}>
@@ -119,7 +112,7 @@ const DetailDrawerForm = <T extends FieldValues>({
               {actions}
             </Stack>
             <Stack>
-              <Button onClick={closeHandler} disabled={isLoading}>
+              <Button onClick={closeHandler} variant="outlined" disabled={isLoading}>
                 {t('button.cancel')}
               </Button>
             </Stack>

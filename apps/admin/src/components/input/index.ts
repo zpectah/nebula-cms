@@ -1,9 +1,11 @@
+export { default as ControlledSwitch } from './ControlledSwitch';
 export { default as Input } from './Input';
 export { default as Select } from './Select';
 export { default as Switch } from './Switch';
 export { default as Email } from './Email';
 export { default as Password } from './Password';
 
+export type { ControlledSwitchProps } from './ControlledSwitch';
 export type { InputProps } from './Input';
 export type { SelectProps } from './Select';
 export type { SwitchProps } from './Switch';

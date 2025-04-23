@@ -15,7 +15,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(({ children, items = [
   return (
     <MuiSelect {...rest} ref={ref} slotProps={slotProps}>
       {items.map((item, index) => (
-        <MenuItem key={index} {...item} />
+        <MenuItem key={String(item.value)} {...item} />
       ))}
       {children}
     </MuiSelect>

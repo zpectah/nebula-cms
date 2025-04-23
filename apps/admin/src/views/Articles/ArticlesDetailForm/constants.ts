@@ -3,9 +3,12 @@ import { articlesTypeKeys } from '@core';
 export const ArticlesDetailFormKeys = {
   type: 'type',
   name: 'name',
+  locale: 'locale',
   title: 'title',
   description: 'description',
   content: 'content',
+  active: 'active',
+  deleted: 'deleted',
 } as const;
 
 export const ArticlesDetailFormDefaults = {
@@ -14,12 +17,20 @@ export const ArticlesDetailFormDefaults = {
   title: '',
   description: '',
   content: '',
+  active: true,
+  deleted: false,
 };
 
 export const ArticlesDetailFormValidations = {
   type: {},
-  name: {},
-  title: {},
+  name: {
+    minLength: 5,
+  },
+  title: {
+    minLength: 5,
+  },
   description: {},
-  content: {},
+  content: {
+    minLength: 5,
+  },
 };

@@ -74,8 +74,8 @@ class Router {
                   'content' => "Article content CS $id",
                 ],
               ],
-              'active' => 1,
-              'deleted' => 0,
+              'active' => true,
+              'deleted' => false,
               'created' => $now,
               'updated' => $now,
             ];
@@ -100,8 +100,8 @@ class Router {
 //                    'content' => "Article content CS $i",
 //                  ],
 //                ],
-                'active' => 1,
-                'deleted' => 0,
+                'active' => true,
+                'deleted' => false,
                 'created' => $now,
                 'updated' => $now,
               ];

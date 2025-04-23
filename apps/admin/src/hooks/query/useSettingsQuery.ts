@@ -7,7 +7,7 @@ const QUERY_KEY_BASE = 'settings';
 export const useSettingsQuery = () => {
   const settingsQuery = useQuery({
     queryKey: [QUERY_KEY_BASE],
-    queryFn: () => axios.get(API_URL_SETTINGS).then((response) => response),
+    queryFn: () => axios.get(API_URL_SETTINGS).then((response) => response.data),
   });
 
   return {

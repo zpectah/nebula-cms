@@ -11,5 +11,19 @@
       "maxNumber": "The value is above the maximum allowed value.",
       "notNumber": "Value must be a number"
     }
+  },
+  "label": {
+    "name": "Name",
+    "type": "Type",
+    "title": "Title",
+    "description": "Description",
+    "content": "Content",
+    "active": "Active",
+    "deleted": "Deleted"
+  },
+  "placeholder": {},
+  "options": {
+    "default": "Default",
+    "event": "Event"
   }
 }

@@ -1,69 +1,36 @@
-import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Stack, Divider } from '@mui/material';
+import { articlesTypeKeys } from '@core';
 import config from '../../../config';
-import { DetailDrawerForm, Input, FormField } from '../../../components';
-import { useArticlesQuery } from '../../../hooks';
-import { newItemKey } from '../../../enums';
+import { DetailDrawerForm, DetailLocaleToggle, Input, Select, FormField, ControlledSwitch } from '../../../components';
+import { useSelectItems } from '../../../hooks';
 import { IArticlesDetailForm } from './types';
 import { useArticlesDetailForm } from './useArticlesDetailForm';
 import { ArticlesDetailFormKeys, ArticlesDetailFormDefaults, ArticlesDetailFormValidations } from './constants';
 
 const ArticlesDetailForm = () => {
   const { id } = useParams();
-  const { form, onSubmit } = useArticlesDetailForm();
-  const { articlesDetailQuery } = useArticlesQuery(id);
+  const { form, isLoading, locale, locales, onLocaleChange, onSubmit, title } = useArticlesDetailForm(id);
+  const { t } = useTranslation('form');
 
-  const { routes } = config;
-  const { formState, setValue, reset } = form;
-  const { data, isLoading } = articlesDetailQuery;
-
-  const drawerTitle = useMemo(() => {
-    return id === newItemKey ? 'New article' : data?.name;
-  }, [id, data]);
-
-  useEffect(() => {
-    if (id === newItemKey) {
-      reset({
-        name: '',
-        type: ArticlesDetailFormDefaults.type,
-        locale: {
-          en: {
-            title: '',
-            description: '',
-            content: '',
-          },
-          cs: {
-            title: '',
-            description: '',
-            content: '',
-          },
-        },
-        active: true,
-        deleted: false,
-      });
-    } else if (data) {
-      reset(data);
-    }
-  }, [id, data]);
+  const typeItems = useSelectItems(Object.keys(articlesTypeKeys));
 
   return (
     <DetailDrawerForm<IArticlesDetailForm>
-      root={routes.articles.path}
+      root={config.routes.articles.path}
       id={id}
       formProps={{
         form,
         formProps: { onSubmit },
       }}
-      title={drawerTitle}
+      title={title}
       isLoading={isLoading}
       isDebug
     >
-      <div>
-        <code>{JSON.stringify(data, null, 2)}</code>
-      </div>
       <FormField
         name={ArticlesDetailFormKeys.name}
-        label={'name'}
+        label={t('label.name')}
         field={
           <Input
             defaultValue={ArticlesDetailFormDefaults.name}
@@ -75,16 +42,67 @@ const ArticlesDetailForm = () => {
       />
       <FormField
         name={ArticlesDetailFormKeys.type}
-        label={'type'}
+        label={t('label.type')}
         field={
-          <Input
+          <Select
             defaultValue={ArticlesDetailFormDefaults.type}
-            slotProps={{ htmlInput: { ...ArticlesDetailFormValidations.type } }}
+            slotProps={{ input: { ...ArticlesDetailFormValidations.type } }}
+            items={typeItems}
             fullWidth
           />
         }
         isRequired
       />
+      <Divider />
+      <DetailLocaleToggle locales={locales} locale={locale} onChange={onLocaleChange} />
+      {locales.map((loc: string) => {
+        const fieldPrefix = `${ArticlesDetailFormKeys.locale}[${loc}]`;
+
+        return (
+          <Stack key={loc} gap={2} sx={{ display: loc !== locale ? 'none' : 'flex' }}>
+            <FormField
+              name={`${fieldPrefix}.${ArticlesDetailFormKeys.title}`}
+              label={t('label.title')}
+              field={
+                <Input
+                  defaultValue={ArticlesDetailFormDefaults.title}
+                  slotProps={{ htmlInput: { ...ArticlesDetailFormValidations.title } }}
+                  fullWidth
+                />
+              }
+              isRequired
+            />
+            <FormField
+              name={`${fieldPrefix}.${ArticlesDetailFormKeys.description}`}
+              label={t('label.description')}
+              field={
+                <Input
+                  defaultValue={ArticlesDetailFormDefaults.description}
+                  slotProps={{ htmlInput: { ...ArticlesDetailFormValidations.description } }}
+                  fullWidth
+                />
+              }
+            />
+            <FormField
+              name={`${fieldPrefix}.${ArticlesDetailFormKeys.content}`}
+              label={t('label.content')}
+              field={
+                <Input
+                  defaultValue={ArticlesDetailFormDefaults.content}
+                  slotProps={{ htmlInput: { ...ArticlesDetailFormValidations.content } }}
+                  fullWidth
+                />
+              }
+              isRequired
+            />
+          </Stack>
+        );
+      })}
+      <Divider />
+      <Stack>
+        <ControlledSwitch name={ArticlesDetailFormKeys.active} label={t('label.active')} />
+        <ControlledSwitch name={ArticlesDetailFormKeys.deleted} label={t('label.deleted')} />
+      </Stack>
     </DetailDrawerForm>
   );
 };

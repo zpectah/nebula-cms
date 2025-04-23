@@ -13,7 +13,7 @@ export const useArticlesQuery = (id?: string) => {
   });
 
   const articlesDetailQuery = useQuery<unknown, unknown, ArticlesDetail>({
-    queryKey: [`${QUERY_KEY_BASE}-${id}`],
+    queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
     queryFn: () => axios.get(`${API_URL_ARTICLES}/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
