@@ -1,10 +1,13 @@
 import { Controller } from 'react-hook-form';
+import { Box, BoxProps } from '@mui/material';
 import { useControlledFormContext } from '../form/ControlledForm.context';
 import Switch, { SwitchProps } from './Switch';
 
-export interface ControlledSwitchProps extends SwitchProps {}
+export interface ControlledSwitchProps extends SwitchProps {
+  boxProps?: Partial<BoxProps>;
+}
 
-const ControlledSwitch = ({ name, ...rest }: ControlledSwitchProps) => {
+const ControlledSwitch = ({ name, boxProps, ...rest }: ControlledSwitchProps) => {
   const { form } = useControlledFormContext();
 
   if (!form) {
@@ -14,11 +17,13 @@ const ControlledSwitch = ({ name, ...rest }: ControlledSwitchProps) => {
   }
 
   return (
-    <Controller
-      name={name}
-      control={form.control}
-      render={({ field }) => <Switch {...field} checked={!!field.value} {...rest} />}
-    />
+    <Box {...boxProps}>
+      <Controller
+        name={name}
+        control={form.control}
+        render={({ field }) => <Switch {...field} checked={!!field.value} {...rest} />}
+      />
+    </Box>
   );
 };
 

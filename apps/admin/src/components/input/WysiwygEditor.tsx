@@ -23,6 +23,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import CodeOffIcon from '@mui/icons-material/CodeOff';
 import FormatClearIcon from '@mui/icons-material/FormatClear';
 import { FieldLabel } from '../form/FieldLabel';
+import { FieldMessage, FieldErrorMessage } from '../form/FieldMessage';
 
 // https://www.npmjs.com/package/react-simple-wysiwyg
 
@@ -32,6 +33,8 @@ export interface WysiwygEditorProps {
   name: string;
   label?: string;
   isRequired?: boolean;
+  helperTexts?: string[];
+  errorTexts?: string[];
 }
 
 const FieldWrapper = styled(Stack)(({ theme }) => ({
@@ -144,7 +147,15 @@ const ButtonHtml = ({ ...rest }) => {
   );
 };
 
-const WysiwygEditor = ({ value, onChange, name, label, isRequired }: WysiwygEditorProps) => {
+const WysiwygEditor = ({
+  value,
+  onChange,
+  name,
+  label,
+  isRequired,
+  helperTexts = [],
+  errorTexts = [],
+}: WysiwygEditorProps) => {
   const [html, setHtml] = useState<string>(value ?? '');
   const [focused, setFocused] = useState(false);
 
@@ -171,37 +182,47 @@ const WysiwygEditor = ({ value, onChange, name, label, isRequired }: WysiwygEdit
             {isRequired && ' *'}
           </FieldLabel>
         )}
-        <Editor
-          name={name}
-          value={html}
-          onChange={changeHandler}
-          onFocus={focusHandler}
-          onBlur={blurHandler}
-          containerProps={{
-            style: { resize: 'vertical' },
-          }}
-        >
-          <Toolbar>
-            <ButtonBold />
-            <ButtonItalic />
-            <ButtonUnderline />
-            <ButtonStrikeThrough />
-            <Separator />
-            <ButtonNumberedList />
-            <ButtonBulletList />
-            <Separator />
-            <ButtonLink />
-            <ButtonUnLink />
-            <Separator />
-            <ButtonClearFormatting />
-            <Separator />
-            <ButtonUndo />
-            <ButtonRedo />
-            <Separator />
-            <ButtonHtml />
-            <Separator />
-          </Toolbar>
-        </Editor>
+        <Stack>
+          <Editor
+            name={name}
+            value={html}
+            onChange={changeHandler}
+            onFocus={focusHandler}
+            onBlur={blurHandler}
+            containerProps={{
+              style: { resize: 'vertical' },
+            }}
+          >
+            <Toolbar>
+              <ButtonBold />
+              <ButtonItalic />
+              <ButtonUnderline />
+              <ButtonStrikeThrough />
+              <Separator />
+              <ButtonNumberedList />
+              <ButtonBulletList />
+              <Separator />
+              <ButtonLink />
+              <ButtonUnLink />
+              <Separator />
+              <ButtonClearFormatting />
+              <Separator />
+              <ButtonUndo />
+              <ButtonRedo />
+              <Separator />
+              <ButtonHtml />
+              <Separator />
+            </Toolbar>
+          </Editor>
+          <Stack direction="column">
+            {errorTexts?.map((text, i) => (
+              <FieldErrorMessage key={i}>{text}</FieldErrorMessage>
+            ))}
+            {helperTexts?.map((text, i) => (
+              <FieldMessage key={i}>{text}</FieldMessage>
+            ))}
+          </Stack>
+        </Stack>
       </FieldWrapper>
     </EditorProvider>
   );

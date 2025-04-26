@@ -19,8 +19,8 @@ import { ArticlesDetailFormKeys, ArticlesDetailFormDefaults, ArticlesDetailFormV
 
 const ArticlesDetailForm = () => {
   const { id } = useParams();
-  const { form, isLoading, locale, locales, onLocaleChange, onSubmit, onDelete, title } = useArticlesDetailForm(id);
   const { t } = useTranslation('form');
+  const { form, isLoading, locale, locales, onLocaleChange, onSubmit, onDelete, title } = useArticlesDetailForm(id);
 
   const typeItems = useSelectItems(Object.keys(articlesTypeKeys));
 
@@ -57,11 +57,14 @@ const ArticlesDetailForm = () => {
             defaultValue={ArticlesDetailFormDefaults.type}
             slotProps={{ input: { ...ArticlesDetailFormValidations.type } }}
             items={typeItems}
-            fullWidth
+            sx={{ width: '250px' }}
           />
         }
         isRequired
       />
+      <Stack>
+        <ControlledSwitch name={ArticlesDetailFormKeys.active} label={t('label.active')} />
+      </Stack>
       <Divider />
       <DetailLocaleToggle locales={locales} locale={locale} onChange={onLocaleChange} />
       {locales.map((loc: string) => {
@@ -102,11 +105,6 @@ const ArticlesDetailForm = () => {
           </Stack>
         );
       })}
-      <Divider />
-      <Stack>
-        <ControlledSwitch name={ArticlesDetailFormKeys.active} label={t('label.active')} />
-        <ControlledSwitch name={ArticlesDetailFormKeys.deleted} label={t('label.deleted')} />
-      </Stack>
     </DetailDrawerForm>
   );
 };

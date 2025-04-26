@@ -6,7 +6,6 @@ export const useFormDetailControl = () => {
   const [processing, setProcessing] = useState(false);
   const [defaultLocale, setDefaultLocale] = useState(config.locales.content);
   const [locales, setLocales] = useState<string[]>([]);
-  const [localesDefault, setLocalesDefault] = useState(config.locales.content);
 
   const { settingsQuery } = useSettingsQuery();
 
@@ -15,7 +14,6 @@ export const useFormDetailControl = () => {
   useEffect(() => {
     if (settingsData) {
       setLocales(settingsData.locales_active);
-      setLocalesDefault(settingsData.locales_default);
     }
   }, [settingsData]);
 
@@ -25,6 +23,5 @@ export const useFormDetailControl = () => {
     locale: defaultLocale,
     setDefaultLocale,
     locales,
-    localesDefault,
   };
 };

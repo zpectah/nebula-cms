@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useArticlesQuery, useFormDetailControl } from '../../../hooks';
 import { newItemKey } from '../../../enums';
@@ -8,9 +9,9 @@ import { ArticlesDetailFormSchema } from './schema';
 import { getNewArticlesItem } from './helpers';
 
 export const useArticlesDetailForm = (id: string | undefined) => {
-  const { locale, setDefaultLocale, isProcessing, setProcessing, locales, localesDefault } = useFormDetailControl();
+  const { t } = useTranslation();
+  const { locale, setDefaultLocale, isProcessing, setProcessing, locales } = useFormDetailControl();
   const form = useForm<IArticlesDetailForm>({
-    mode: 'all',
     resolver: zodResolver(ArticlesDetailFormSchema),
   });
   const { articlesDetailQuery } = useArticlesQuery(id);
@@ -19,33 +20,47 @@ export const useArticlesDetailForm = (id: string | undefined) => {
 
   const isFormValid = form.formState.isValid;
 
-  const title = useMemo(() => (id === newItemKey ? 'New article' : detailData?.name), [id, detailData]);
+  const title = useMemo(() => (id === newItemKey ? t('newItem.articles') : detailData?.name), [id, detailData]);
 
   const submitHandler: SubmitHandler<IArticlesDetailForm> = (data) => {
+    if (!data) return;
+
     setProcessing(true);
 
-    console.log('data', data);
-    // TODO
+    const master = Object.assign({
+      ...data,
+    });
 
-    setProcessing(false);
+    if (master.id === 0) {
+      // TODO
+      console.log('create new data', 'new', master.id, master);
+      setProcessing(false);
+      // TODO
+    } else {
+      // TODO
+      console.log('update existing data', master.id, master);
+      setProcessing(false);
+      // TODO
+    }
   };
 
   const deleteHandler = () => {
+    const data = form.getValues();
+
+    if (!data) return;
+
     setProcessing(true);
 
-    // Confirmed action
-    // Set 'deleted' attribute to 'true' and send request same as update
-    console.log('data', 'id položky ...', detailData);
+    const master = Object.assign({
+      ...data,
+      deleted: 1,
+    });
+
     // TODO
-
+    console.log('delete: master data', master);
     setProcessing(false);
+    // TODO
   };
-
-  useEffect(() => {
-    if (form.formState.errors) {
-      console.log(form.formState.errors);
-    }
-  }, [form.formState]);
 
   useEffect(() => {
     if (id === newItemKey) {
@@ -56,7 +71,7 @@ export const useArticlesDetailForm = (id: string | undefined) => {
   }, [id, detailData]);
 
   return {
-    // detailData,
+    detailData,
     form,
     isLoading,
     isProcessing,

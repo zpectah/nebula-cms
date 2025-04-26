@@ -77,6 +77,7 @@ const DetailDrawerForm = <T extends FieldValues>({
 
   const isNew = id === 'new';
   const isValid = !!form?.formState.isValid;
+  const isDirty = form?.formState.isDirty;
 
   const barProps: Partial<StackProps> = {
     direction: 'row',
@@ -91,7 +92,16 @@ const DetailDrawerForm = <T extends FieldValues>({
         open={!!id}
         anchor="right"
         onClose={closeHandler}
-        slotProps={{ paper: { sx: { width: '50vw' } } }}
+        slotProps={{
+          paper: {
+            sx: {
+              width: {
+                xs: '100vw',
+                md: '750px',
+              },
+            },
+          },
+        }}
         {...drawerProps}
       >
         <ControlledForm
@@ -112,21 +122,17 @@ const DetailDrawerForm = <T extends FieldValues>({
             <Content gap={2}>{isLoading ? <PreloaderBase /> : children}</Content>
             <Footer {...barProps}>
               <Stack direction="row" gap={2}>
-                <Button type="submit" variant="contained" disabled={isLoading || !isValid}>
+                <Button type="submit" variant="contained" disabled={isLoading || !isValid || !isDirty}>
                   {isNew ? t('button.create') : t('button.update')}
                 </Button>
-                <Button
-                  onClick={() => {
-                    onConfirmationOpen();
-                  }}
-                  color="error"
-                  variant="outlined"
-                >
-                  Delete
-                </Button>
-                <Button onClick={() => form?.reset()} variant="outlined" disabled={isLoading}>
+                <Button onClick={() => form?.reset()} variant="outlined" disabled={!isDirty}>
                   {t('button.reset')}
                 </Button>
+                {!isNew && (
+                  <Button onClick={onConfirmationOpen} color="error" variant="outlined">
+                    {t('button.delete')}
+                  </Button>
+                )}
                 {actions}
               </Stack>
               <Stack>
@@ -142,8 +148,8 @@ const DetailDrawerForm = <T extends FieldValues>({
         open={confirmationOpen}
         onClose={onConfirmationClose}
         onConfirm={confirmDeleteHandler}
-        title="Delete"
-        description="Do you want to delete this item?"
+        title={t('confirmation.delete.title')}
+        description={t('confirmation.delete.description')}
       />
     </>
   );
