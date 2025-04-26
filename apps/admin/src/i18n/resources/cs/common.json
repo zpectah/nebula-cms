@@ -7,7 +7,8 @@
     "update": "Aktualizovat",
     "reset": "Reset",
     "cancel": "Zrušit",
-    "close": "Zavřít"
+    "close": "Zavřít",
+    "confirm": "Potvrdit"
   },
   "theme": {
     "light": "Světlé",
@@ -34,5 +35,19 @@
     "global": "Obecné",
     "language": "Jazyky",
     "maintenance": "Údržba"
+  },
+  "editor": {
+    "bold": "Tučně",
+    "italic": "Italic",
+    "underline": "Podržení",
+    "strikeThrough": "Přeškrtnutí",
+    "orderedList": "Číslovaný seznam",
+    "bulletList": "Výchozí seznam",
+    "link": "Odkaz",
+    "unlink": "Odstranit odkaz",
+    "removeFormat": "Odstranit formátování",
+    "undo": "Předchozí úpravy",
+    "redo": "Další úpravy",
+    "htmlCode": "HTML kód"
   }
 }

@@ -30,6 +30,17 @@ export const useArticlesDetailForm = (id: string | undefined) => {
     setProcessing(false);
   };
 
+  const deleteHandler = () => {
+    setProcessing(true);
+
+    // Confirmed action
+    // Set 'deleted' attribute to 'true' and send request same as update
+    console.log('data', 'id položky ...', detailData);
+    // TODO
+
+    setProcessing(false);
+  };
+
   useEffect(() => {
     if (form.formState.errors) {
       console.log(form.formState.errors);
@@ -54,6 +65,7 @@ export const useArticlesDetailForm = (id: string | undefined) => {
     locales,
     onLocaleChange: setDefaultLocale,
     onSubmit: form.handleSubmit(submitHandler),
+    onDelete: deleteHandler,
     title,
   };
 };

@@ -3,7 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { Stack, Divider } from '@mui/material';
 import { articlesTypeKeys } from '@core';
 import config from '../../../config';
-import { DetailDrawerForm, DetailLocaleToggle, Input, Select, FormField, ControlledSwitch } from '../../../components';
+import {
+  DetailDrawerForm,
+  DetailLocaleToggle,
+  Input,
+  Select,
+  FormField,
+  ControlledSwitch,
+  ControlledWysiwygEditor,
+} from '../../../components';
 import { useSelectItems } from '../../../hooks';
 import { IArticlesDetailForm } from './types';
 import { useArticlesDetailForm } from './useArticlesDetailForm';
@@ -11,7 +19,7 @@ import { ArticlesDetailFormKeys, ArticlesDetailFormDefaults, ArticlesDetailFormV
 
 const ArticlesDetailForm = () => {
   const { id } = useParams();
-  const { form, isLoading, locale, locales, onLocaleChange, onSubmit, title } = useArticlesDetailForm(id);
+  const { form, isLoading, locale, locales, onLocaleChange, onSubmit, onDelete, title } = useArticlesDetailForm(id);
   const { t } = useTranslation('form');
 
   const typeItems = useSelectItems(Object.keys(articlesTypeKeys));
@@ -27,6 +35,7 @@ const ArticlesDetailForm = () => {
       title={title}
       isLoading={isLoading}
       isDebug
+      onDelete={onDelete}
     >
       <FormField
         name={ArticlesDetailFormKeys.name}
@@ -79,20 +88,15 @@ const ArticlesDetailForm = () => {
                 <Input
                   defaultValue={ArticlesDetailFormDefaults.description}
                   slotProps={{ htmlInput: { ...ArticlesDetailFormValidations.description } }}
+                  rows={5}
+                  multiline
                   fullWidth
                 />
               }
             />
-            <FormField
+            <ControlledWysiwygEditor
               name={`${fieldPrefix}.${ArticlesDetailFormKeys.content}`}
               label={t('label.content')}
-              field={
-                <Input
-                  defaultValue={ArticlesDetailFormDefaults.content}
-                  slotProps={{ htmlInput: { ...ArticlesDetailFormValidations.content } }}
-                  fullWidth
-                />
-              }
               isRequired
             />
           </Stack>

@@ -7,7 +7,8 @@
     "update": "Update",
     "reset": "Reset",
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "confirm": "Confirm"
   },
   "theme": {
     "light": "Light",
@@ -34,5 +35,19 @@
     "global": "Global",
     "language": "Language",
     "maintenance": "Maintenance"
+  },
+  "editor": {
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "strikeThrough": "Strike through",
+    "orderedList": "Ordered List",
+    "bulletList": "Bullet List",
+    "link": "Link",
+    "unlink": "Remove link",
+    "removeFormat": "Remove format",
+    "undo": "Undo",
+    "redo": "Redo",
+    "htmlCode": "HTML code"
   }
 }

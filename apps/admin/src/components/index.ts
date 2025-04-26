@@ -4,6 +4,7 @@ export * from './Card';
 export * from './DataTable';
 export * from './DetailDrawerForm';
 export * from './DetailLocaleToggle';
+export * from './dialog';
 export * from './Footer';
 export * from './form';
 export * from './Header';

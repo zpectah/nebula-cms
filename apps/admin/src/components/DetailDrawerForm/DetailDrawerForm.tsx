@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { WithChildren } from '@common';
 import { ControlledForm, ControlledFormProps } from '../form';
 import { PreloaderBase } from '../preloader';
+import { ConfirmationDialog, useConfirmationDialog } from '../dialog';
 
 interface DetailDrawerFormProps<T extends FieldValues> extends WithChildren {
   formProps: Omit<ControlledFormProps<T>, 'children'>;
@@ -28,6 +29,7 @@ interface DetailDrawerFormProps<T extends FieldValues> extends WithChildren {
   drawerProps?: Partial<DrawerProps>;
   isLoading?: boolean;
   isDebug?: boolean;
+  onDelete?: () => void;
 }
 
 const Container = styled(Stack)(({ theme }) => ({
@@ -60,12 +62,18 @@ const DetailDrawerForm = <T extends FieldValues>({
   actions,
   drawerProps,
   isLoading,
-  isDebug,
+  onDelete,
 }: DetailDrawerFormProps<T>) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { open: confirmationOpen, onClose: onConfirmationClose, onOpen: onConfirmationOpen } = useConfirmationDialog();
 
   const closeHandler = () => navigate(root);
+  const confirmDeleteHandler = () => {
+    onDelete?.();
+    closeHandler();
+    // TODO: Popup message ?
+  };
 
   const isNew = id === 'new';
   const isValid = !!form?.formState.isValid;
@@ -78,48 +86,66 @@ const DetailDrawerForm = <T extends FieldValues>({
   };
 
   return (
-    <Drawer
-      open={!!id}
-      anchor="right"
-      onClose={closeHandler}
-      slotProps={{ paper: { sx: { width: '50vw' } } }}
-      {...drawerProps}
-    >
-      <ControlledForm
-        form={form}
-        formProps={{ style: { width: '100%', height: '100%', display: 'flex' }, ...formProps }}
+    <>
+      <Drawer
+        open={!!id}
+        anchor="right"
+        onClose={closeHandler}
+        slotProps={{ paper: { sx: { width: '50vw' } } }}
+        {...drawerProps}
       >
-        <Container>
-          <Header {...barProps}>
-            <Stack>
-              {isLoading && <Skeleton variant="text" width={350} sx={{ fontSize: '1.6rem' }} />}
-              <Typography variant="h3">{title}</Typography>
-              <Typography variant="subtitle2">{subtitle}</Typography>
-            </Stack>
-            <IconButton onClick={closeHandler}>
-              <CloseIcon />
-            </IconButton>
-          </Header>
-          <Content gap={2}>{isLoading ? <PreloaderBase /> : children}</Content>
-          <Footer {...barProps}>
-            <Stack direction="row" gap={2}>
-              <Button type="submit" variant="contained" disabled={isLoading || !isValid}>
-                {isNew ? t('button.create') : t('button.update')}
-              </Button>
-              <Button onClick={() => form?.reset()} variant="outlined" disabled={isLoading}>
-                {t('button.reset')}
-              </Button>
-              {actions}
-            </Stack>
-            <Stack>
-              <Button onClick={closeHandler} variant="outlined" disabled={isLoading}>
-                {t('button.cancel')}
-              </Button>
-            </Stack>
-          </Footer>
-        </Container>
-      </ControlledForm>
-    </Drawer>
+        <ControlledForm
+          form={form}
+          formProps={{ style: { width: '100%', height: '100%', display: 'flex' }, ...formProps }}
+        >
+          <Container>
+            <Header {...barProps}>
+              <Stack>
+                {isLoading && <Skeleton variant="text" width={350} sx={{ fontSize: '1.6rem' }} />}
+                <Typography variant="h3">{title}</Typography>
+                <Typography variant="subtitle2">{subtitle}</Typography>
+              </Stack>
+              <IconButton onClick={closeHandler}>
+                <CloseIcon />
+              </IconButton>
+            </Header>
+            <Content gap={2}>{isLoading ? <PreloaderBase /> : children}</Content>
+            <Footer {...barProps}>
+              <Stack direction="row" gap={2}>
+                <Button type="submit" variant="contained" disabled={isLoading || !isValid}>
+                  {isNew ? t('button.create') : t('button.update')}
+                </Button>
+                <Button
+                  onClick={() => {
+                    onConfirmationOpen();
+                  }}
+                  color="error"
+                  variant="outlined"
+                >
+                  Delete
+                </Button>
+                <Button onClick={() => form?.reset()} variant="outlined" disabled={isLoading}>
+                  {t('button.reset')}
+                </Button>
+                {actions}
+              </Stack>
+              <Stack>
+                <Button onClick={closeHandler} variant="outlined" disabled={isLoading}>
+                  {t('button.cancel')}
+                </Button>
+              </Stack>
+            </Footer>
+          </Container>
+        </ControlledForm>
+      </Drawer>
+      <ConfirmationDialog
+        open={confirmationOpen}
+        onClose={onConfirmationClose}
+        onConfirm={confirmDeleteHandler}
+        title="Delete"
+        description="Do you want to delete this item?"
+      />
+    </>
   );
 };
 
