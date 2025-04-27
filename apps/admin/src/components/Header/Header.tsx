@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { styled, Container, Stack } from '@mui/material';
+import bgImage from '../../assets/bg_dust.png';
 import config from '../../config';
 import { useSettingsQuery } from '../../hooks';
 import { MainMenu } from '../navigation';
@@ -9,13 +10,13 @@ import { UserMenu } from '../UserMenu';
 
 const Wrapper = styled('header')(({ theme }) => ({
   width: '100%',
-  backgroundColor: '#01719A',
-  color: theme.palette.getContrastText('#01719A'),
+  borderBottom: `solid 1px ${theme.palette.divider}`,
+  background: `url(${bgImage})`,
 }));
 
 const WrapperInner = styled('div')(({ theme }) => ({
   width: '100%',
-  height: '60px',
+  height: '59px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -51,7 +52,8 @@ const AppLogo = styled(Link)(({ theme }) => ({
   opacity: 0.9,
   cursor: 'pointer',
   textDecoration: 'none',
-  color: 'inherit',
+  textTransform: 'uppercase',
+  color: theme.palette.text.primary,
 
   '&:hover': {
     opacity: 1,
@@ -60,8 +62,6 @@ const AppLogo = styled(Link)(({ theme }) => ({
 
 const Header = () => {
   const { settingsQuery } = useSettingsQuery();
-
-  const { routes } = config;
 
   const { data } = settingsQuery;
 
@@ -73,7 +73,7 @@ const Header = () => {
             <MainMenu buttonColor="inherit" />
           </PrimaryBlock>
           <TertiaryBlock>
-            <AppLogo to={routes.dashboard.path}>{data?.data?.project_name}</AppLogo>
+            <AppLogo to={config.routes.dashboard.path}>{data?.project_name}</AppLogo>
           </TertiaryBlock>
           <SecondaryBlock>
             <Stack direction="row" gap={1.5}>
