@@ -5,11 +5,11 @@ import { getComparator } from './helpers';
 import { orderKeys } from './enums';
 
 export const useDataTable = <T extends ItemBase>(rows: T[]) => {
-  const [order, setOrder] = useState<Order>(orderKeys.asc);
+  const [order, setOrder] = useState<Order>(orderKeys.desc);
   const [orderBy, setOrderBy] = useState<keyof T>('id');
   const [selected, setSelected] = useState<readonly number[]>([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const sortHandler = (event: MouseEvent<unknown>, property: keyof T) => {
     const isAsc = orderBy === property && order === orderKeys.asc;

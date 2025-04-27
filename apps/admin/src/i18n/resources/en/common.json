@@ -79,5 +79,11 @@
     "selectedItemsUpdated": "Selected items was updated",
     "itemDeleted": "Item was deleted",
     "selectedItemsDeleted": "Selected items was deleted"
+  },
+  "labels": {
+    "name": "Name",
+    "type": "Type",
+    "updated": "Updated",
+    "action": "Action"
   }
 }

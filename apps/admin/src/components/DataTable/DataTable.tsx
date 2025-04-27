@@ -1,5 +1,7 @@
 import { Key } from 'react';
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 import { visuallyHidden } from '@mui/utils';
 import {
   Box,
@@ -19,16 +21,33 @@ import {
   Tooltip,
   Button,
   Stack,
+  styled,
+  Divider,
 } from '@mui/material';
 import { ItemBase } from '@common';
 import { orderKeys } from './enums';
 import { DataTableProps } from './types';
 import { useDataTable } from './useDataTable';
 
-const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isLoading }: DataTableProps<T>) => {
+const RowTitleLink = styled(Link)(({ theme }) => ({
+  color: 'inherit',
+  textDecoration: 'none',
+  fontWeight: 700,
+
+  '&:hover': {
+    textDecoration: 'underline',
+  },
+}));
+
+const DataTable = <T extends ItemBase>({
+  rows = [],
+  columns = [],
+  urlPrefix,
+  isLoading,
+  disableUpdatedColumn,
+}: DataTableProps<T>) => {
   const {
     visibleRows,
-    emptyRows,
     order,
     orderBy,
     selected,
@@ -40,6 +59,7 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
     onSelectAll,
     onSort,
   } = useDataTable<T>(rows);
+  const { t } = useTranslation();
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -52,25 +72,23 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
             },
           ]}
         >
-          {selected.length > 0 ? (
-            <Typography sx={{ flex: '1 1 100%' }} color="inherit" variant="subtitle1" component="div">
-              {selected.length} selected
-            </Typography>
-          ) : (
-            <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
-              Nutrition
-            </Typography>
-          )}
-          {selected.length > 0 ? (
-            <Tooltip title="Delete">
-              <IconButton>delete</IconButton>
-            </Tooltip>
-          ) : (
-            <Tooltip title="Filter list">
-              <IconButton>filter</IconButton>
-            </Tooltip>
-          )}
+          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ width: '100%' }}>
+            <Stack direction="row" alignItems="center" gap={2}>
+              <Typography>
+                Order by: {String(orderBy)}|{order}
+              </Typography>
+              <Button variant="outlined" size="small" onClick={() => onSort('id')}>
+                Reset to id
+              </Button>
+            </Stack>
+            <Stack direction="row" alignItems="center" gap={2}>
+              <Button variant="outlined" size="small" disabled={selected.length <= 0}>
+                Delete selected ({selected.length})
+              </Button>
+            </Stack>
+          </Stack>
         </Toolbar>
+        <Divider />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <TableHead>
@@ -83,7 +101,7 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
                     onChange={onSelectAll}
                     slotProps={{
                       input: {
-                        'aria-label': 'select all desserts',
+                        'aria-label': 'select all rows',
                       },
                     }}
                   />
@@ -94,6 +112,7 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
                     align={column.numeric ? 'right' : 'left'}
                     padding={column.disablePadding ? 'none' : 'normal'}
                     sortDirection={orderBy === column.id ? order : false}
+                    width={column.width ?? 'auto'}
                   >
                     <TableSortLabel
                       active={orderBy === column.id}
@@ -109,13 +128,16 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
                     </TableSortLabel>
                   </TableCell>
                 ))}
-                <TableCell align="right">Akce</TableCell>
+                {!disableUpdatedColumn && <TableCell width="150px">{t('labels.updated')}</TableCell>}
+                <TableCell align="right" width="150px">
+                  {t('labels.action')}
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {visibleRows.map((row, index) => {
                 const isItemSelected = selected.includes(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
+                const labelId = `table-row-checkbox-${index}`;
 
                 return (
                   <TableRow
@@ -138,24 +160,26 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
                         }}
                       />
                     </TableCell>
+                    {columns.map((column, columnIndex) => {
+                      const value = row[column.id] as string;
+                      const label = column.renderValue ? column.renderValue(value) : value;
 
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id as Key}
-                        component={column.isTitle ? 'th' : 'td'}
-                        scope={column.isTitle ? 'row' : undefined}
-                        align={column.numeric ? 'right' : 'left'}
-                        padding={column.disablePadding ? 'none' : 'normal'}
-                      >
-                        {row[column.id] as string}
-                      </TableCell>
-                    ))}
-
+                      return (
+                        <TableCell
+                          key={column.id as Key}
+                          component={column.isTitle ? 'th' : 'td'}
+                          scope={column.isTitle ? 'row' : undefined}
+                          align={column.numeric ? 'right' : 'left'}
+                          padding={column.disablePadding ? 'none' : 'normal'}
+                          id={column.isTitle ? labelId : `${labelId}-${columnIndex}`}
+                        >
+                          {column.isLink ? <RowTitleLink to={`${urlPrefix}/${row.id}`}>{label}</RowTitleLink> : label}
+                        </TableCell>
+                      );
+                    })}
+                    {!disableUpdatedColumn && <TableCell>{dayjs(row.updated).format('DD.MM. YYYY')} </TableCell>}
                     <TableCell align="right">
                       <Stack direction="row" gap={1} sx={{ display: 'inline-flex' }}>
-                        <Button variant="outlined" color="error" size="small">
-                          Delete
-                        </Button>
                         <Button component={Link} to={`${urlPrefix}/${row.id}`} variant="outlined" size="small">
                           Detail
                         </Button>
@@ -164,15 +188,6 @@ const DataTable = <T extends ItemBase>({ rows = [], columns = [], urlPrefix, isL
                   </TableRow>
                 );
               })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: 53 * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={4} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>

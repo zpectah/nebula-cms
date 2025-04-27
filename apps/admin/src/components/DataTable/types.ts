@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { ItemBase } from '@common';
 import { orderKeys } from './enums';
 
@@ -9,6 +10,9 @@ export interface DataTableColumn<T extends ItemBase> {
   disablePadding?: boolean;
   label: string;
   isTitle?: boolean;
+  isLink?: boolean;
+  width?: string;
+  renderValue?: (value: string) => ReactNode;
 }
 
 export interface DataTableProps<T extends ItemBase> {
@@ -16,4 +20,5 @@ export interface DataTableProps<T extends ItemBase> {
   columns: DataTableColumn<T>[];
   urlPrefix: string;
   isLoading?: boolean;
+  disableUpdatedColumn?: boolean;
 }

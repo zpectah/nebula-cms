@@ -79,5 +79,11 @@
     "selectedItemsUpdated": "Vybrané položky byly aktualizovány",
     "itemDeleted": "Položka byla smazána",
     "selectedItemsDeleted": "Vybrané položky byly smazané"
+  },
+  "labels": {
+    "name": "Název",
+    "type": "Typ",
+    "updated": "Aktualizováno",
+    "action": "Akce"
   }
 }
