@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,8 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { WithChildren } from '@common';
+import { newItemKey } from '../../enums';
+import { useToastsStore } from '../../store';
 import { ControlledForm, ControlledFormProps } from '../form';
 import { PreloaderBase } from '../preloader';
 import { ConfirmationDialog, useConfirmationDialog } from '../dialog';
@@ -67,15 +69,16 @@ const DetailDrawerForm = <T extends FieldValues>({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { open: confirmationOpen, onClose: onConfirmationClose, onOpen: onConfirmationOpen } = useConfirmationDialog();
+  const { addToast } = useToastsStore();
 
   const closeHandler = () => navigate(root);
   const confirmDeleteHandler = () => {
     onDelete?.();
     closeHandler();
-    // TODO: Popup message ?
+    addToast(t('message.itemDeleted'), 'success', true);
   };
 
-  const isNew = id === 'new';
+  const isNew = id === newItemKey;
   const isValid = !!form?.formState.isValid;
   const isDirty = form?.formState.isDirty;
 

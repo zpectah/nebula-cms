@@ -73,5 +73,11 @@
       "title": "Delete",
       "description": "Do you want to delete selected items?"
     }
+  },
+  "message": {
+    "itemUpdated": "Item was updated",
+    "selectedItemsUpdated": "Selected items was updated",
+    "itemDeleted": "Item was deleted",
+    "selectedItemsDeleted": "Selected items was deleted"
   }
 }

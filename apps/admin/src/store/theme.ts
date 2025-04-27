@@ -11,7 +11,7 @@ const useThemeStore = create<ThemeStore>((set) => {
 
   const setModeHandler = (mode: ThemeMode) => {
     set({ mode });
-    window.localStorage.setItem('APP_THEME_MODE', mode);
+    window.localStorage.setItem('APP_THEME_MODE', mode as string);
   };
 
   return {

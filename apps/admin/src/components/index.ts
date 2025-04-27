@@ -14,4 +14,5 @@ export * from './LocalesToggle';
 export * from './navigation';
 export * from './preloader';
 export * from './ThemeToggle';
+export * from './Toasts';
 export * from './UserMenu';

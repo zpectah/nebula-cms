@@ -99,3 +99,12 @@ export const getRandomStringFromArraySet = (
 
   return generateLoremIpsum(options.paragraphs, options.sentences, options.words);
 };
+
+export const getRandomId = (length: number = 16) =>
+  getRandomPassword({
+    length,
+    number: true,
+    lowercase: true,
+    uppercase: true,
+    special: false,
+  });

@@ -73,5 +73,11 @@
       "title": "Smazat",
       "description": "Chcete smazat vybrané položky?"
     }
+  },
+  "message": {
+    "itemUpdated": "Položka byla aktualizována",
+    "selectedItemsUpdated": "Vybrané položky byly aktualizovány",
+    "itemDeleted": "Položka byla smazána",
+    "selectedItemsDeleted": "Vybrané položky byly smazané"
   }
 }

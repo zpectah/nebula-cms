@@ -89,6 +89,8 @@ const FieldWrapper = styled(Stack)(({ theme }) => ({
   },
 }));
 
+// In case of missing translations for button captions, redesign all buttons similar to 'ButtonHtml' and create events via 'document.execCommand()'
+
 const ButtonUndo = createButton(i18next.t('editor.undo') ?? '', <UndoIcon fontSize="inherit" />, 'undo');
 const ButtonRedo = createButton(i18next.t('editor.redo') ?? '', <RedoIcon fontSize="inherit" />, 'redo');
 const ButtonBold = createButton(i18next.t('editor.bold') ?? '', <FormatBoldIcon fontSize="inherit" />, 'bold');

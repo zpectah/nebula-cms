@@ -1,5 +1,6 @@
 import { styled } from '@mui/material';
 import { WithChildren } from '@common';
+import { Toasts } from '../Toasts';
 
 const Wrapper = styled('div')(({ theme }) => ({
   width: '100%',
@@ -19,12 +20,13 @@ interface LayoutBaseProps extends WithChildren {
   id?: string;
 }
 
-const LayoutBase = ({ children, id, variant = 'default' }: LayoutBaseProps) => {
-  return (
+const LayoutBase = ({ children, id, variant = 'default' }: LayoutBaseProps) => (
+  <>
     <Wrapper id={id} className={`layout-base--${variant}`}>
       {children}
     </Wrapper>
-  );
-};
+    <Toasts />
+  </>
+);
 
 export default LayoutBase;

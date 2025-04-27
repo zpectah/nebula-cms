@@ -37,6 +37,7 @@ const AppRouter = () => {
     {
       path: '/',
       element: <Navigate replace to={routes.login.path} />,
+      // TODO: Navigate to '/dashboard' if user logged in, otherwise redirect to '/login'
     },
 
     {
