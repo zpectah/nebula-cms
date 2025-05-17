@@ -12,7 +12,7 @@ export interface DataTableColumn<T extends ItemBase> {
   isTitle?: boolean;
   isLink?: boolean;
   width?: string;
-  renderValue?: (value: string) => ReactNode;
+  renderValue?: (value: unknown) => ReactNode;
 }
 
 export interface DataTableProps<T extends ItemBase> {
@@ -21,4 +21,5 @@ export interface DataTableProps<T extends ItemBase> {
   urlPrefix: string;
   isLoading?: boolean;
   disableUpdatedColumn?: boolean;
+  onDeleteSelected?: (selected: number[]) => void;
 }

@@ -9,7 +9,8 @@
     "cancel": "Cancel",
     "close": "Close",
     "confirm": "Confirm",
-    "delete": "Delete"
+    "delete": "Delete",
+    "deleteSelected": "Delete selected"
   },
   "theme": {
     "light": "Light",
@@ -84,6 +85,13 @@
     "name": "Name",
     "type": "Type",
     "updated": "Updated",
-    "action": "Action"
+    "action": "Action",
+    "active": "Active"
+  },
+  "table": {
+    "orderById": "Order by default",
+    "orderAscending": "Order ascending",
+    "orderDescending": "Order descending",
+    "detail": "Detail"
   }
 }

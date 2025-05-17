@@ -22,7 +22,7 @@ const ArticlesDetailForm = () => {
   const { t } = useTranslation('form');
   const { form, isLoading, locale, locales, onLocaleChange, onSubmit, onDelete, title } = useArticlesDetailForm(id);
 
-  const typeItems = useSelectItems(Object.keys(articlesTypeKeys));
+  const typeOptionsItems = useSelectItems(Object.keys(articlesTypeKeys));
 
   return (
     <DetailDrawerForm<IArticlesDetailForm>
@@ -56,7 +56,7 @@ const ArticlesDetailForm = () => {
           <Select
             defaultValue={ArticlesDetailFormDefaults.type}
             slotProps={{ input: { ...ArticlesDetailFormValidations.type } }}
-            items={typeItems}
+            items={typeOptionsItems}
             sx={{ width: '250px' }}
           />
         }

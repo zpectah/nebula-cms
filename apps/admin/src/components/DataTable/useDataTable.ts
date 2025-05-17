@@ -1,24 +1,26 @@
 import { ChangeEvent, MouseEvent, useMemo, useState } from 'react';
-import { ItemBase } from '@common';
+import { ItemBase, itemBaseKeys } from '@common';
 import { Order } from './types';
 import { getComparator } from './helpers';
 import { orderKeys } from './enums';
+import { TABLE_ROWS_PER_PAGE_DEFAULT } from './constants';
 
-export const useDataTable = <T extends ItemBase>(rows: T[]) => {
+export const useDataTable = <T extends ItemBase>(rows: T[], onDeleteSelected?: (selected: number[]) => void) => {
   const [order, setOrder] = useState<Order>(orderKeys.desc);
-  const [orderBy, setOrderBy] = useState<keyof T>('id');
-  const [selected, setSelected] = useState<readonly number[]>([]);
+  const [orderBy, setOrderBy] = useState<keyof T>(itemBaseKeys.id);
+  const [selected, setSelected] = useState<number[]>([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(TABLE_ROWS_PER_PAGE_DEFAULT);
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
 
-  const sortHandler = (event: MouseEvent<unknown>, property: keyof T) => {
+  const sortHandler = (property: keyof T) => {
     const isAsc = orderBy === property && order === orderKeys.asc;
 
     setOrder(isAsc ? orderKeys.desc : orderKeys.asc);
     setOrderBy(property);
   };
 
-  const createSortHandler = (property: keyof ItemBase) => (event: MouseEvent<unknown>) => sortHandler(event, property);
+  const createSortHandler = (property: keyof ItemBase) => () => sortHandler(property);
 
   const selectAllClickHandler = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -30,9 +32,9 @@ export const useDataTable = <T extends ItemBase>(rows: T[]) => {
     setSelected([]);
   };
 
-  const selectHandler = (event: MouseEvent<unknown>, id: number) => {
+  const selectHandler = (id: number) => {
     const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
+    let newSelected: number[] = [];
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
@@ -47,7 +49,7 @@ export const useDataTable = <T extends ItemBase>(rows: T[]) => {
     setSelected(newSelected);
   };
 
-  const changePageHandler = (event: unknown, newPage: number) => setPage(newPage);
+  const changePageHandler = (newPage: number) => setPage(newPage);
 
   const changeRowsPerPageHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -60,6 +62,17 @@ export const useDataTable = <T extends ItemBase>(rows: T[]) => {
     () => [...rows].sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rowsPerPage, rows]
   );
+
+  const confirmationOpenHandler = () => setConfirmationOpen(true);
+
+  const confirmationCloseHandler = () => setConfirmationOpen(false);
+
+  const confirmationConfirmHandler = () => {
+    onDeleteSelected?.(selected);
+    confirmationCloseHandler();
+    setSelected([]);
+    setPage(0);
+  };
 
   return {
     visibleRows,
@@ -74,5 +87,9 @@ export const useDataTable = <T extends ItemBase>(rows: T[]) => {
     onSelect: selectHandler,
     onSelectAll: selectAllClickHandler,
     onSort: createSortHandler,
+    isConfirmationOpen: confirmationOpen,
+    onConfirmationOpen: confirmationOpenHandler,
+    onConfirmationClose: confirmationCloseHandler,
+    onConfirmationConfirm: confirmationConfirmHandler,
   };
 };

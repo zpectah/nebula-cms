@@ -9,7 +9,8 @@
     "cancel": "Zrušit",
     "close": "Zavřít",
     "confirm": "Potvrdit",
-    "delete": "Smazat"
+    "delete": "Smazat",
+    "deleteSelected": "Smazat vybrané"
   },
   "theme": {
     "light": "Světlé",
@@ -84,6 +85,13 @@
     "name": "Název",
     "type": "Typ",
     "updated": "Aktualizováno",
-    "action": "Akce"
+    "action": "Akce",
+    "active": "Aktivní"
+  },
+  "table": {
+    "orderById": "Výchozí řazení",
+    "orderAscending": "Seřadit vzestupně",
+    "orderDescending": "Seřadit sestupně",
+    "detail": "Detail"
   }
 }
