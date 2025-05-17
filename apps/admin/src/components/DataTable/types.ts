@@ -12,7 +12,7 @@ export interface DataTableColumn<T extends ItemBase> {
   isTitle?: boolean;
   isLink?: boolean;
   width?: string;
-  renderValue?: (value: unknown) => ReactNode;
+  renderValue?: (value: unknown, row: T, index: number) => ReactNode;
 }
 
 export interface DataTableProps<T extends ItemBase> {

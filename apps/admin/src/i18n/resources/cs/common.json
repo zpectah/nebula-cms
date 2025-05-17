@@ -90,8 +90,7 @@
   },
   "table": {
     "orderById": "Výchozí řazení",
-    "orderAscending": "Seřadit vzestupně",
-    "orderDescending": "Seřadit sestupně",
+    "order": "Seřadit",
     "detail": "Detail"
   }
 }

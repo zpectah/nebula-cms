@@ -23,6 +23,8 @@ import {
   styled,
   Divider,
 } from '@mui/material';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { itemBaseKeys, ItemBase } from '@common';
 import { getFormattedDate, getFormattedTime } from '../../utils';
 import { ConfirmationDialog } from '../dialog';
@@ -82,16 +84,31 @@ const DataTable = <T extends ItemBase>({
           >
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ width: '100%' }}>
               <Stack direction="row" alignItems="center" gap={2}>
-                <Button variant="outlined" size="small" onClick={onSort(itemBaseKeys.id)}>
-                  {orderBy !== itemBaseKeys.id
-                    ? t('table.orderById')
-                    : order === orderKeys.asc
-                    ? t('table.orderDescending')
-                    : t('table.orderAscending')}
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={onSort(itemBaseKeys.id)}
+                  endIcon={
+                    orderBy === itemBaseKeys.id ? (
+                      order === orderKeys.asc ? (
+                        <ArrowUpwardIcon fontSize="small" />
+                      ) : (
+                        <ArrowDownwardIcon fontSize="small" />
+                      )
+                    ) : null
+                  }
+                >
+                  {orderBy !== itemBaseKeys.id ? t('table.orderById') : t('table.order')}
                 </Button>
               </Stack>
               <Stack direction="row" alignItems="center" gap={2}>
-                <Button variant="outlined" size="small" disabled={selected.length < 1} onClick={onConfirmationOpen}>
+                <Button
+                  variant="contained"
+                  color="error"
+                  size="small"
+                  disabled={selected.length < 1}
+                  onClick={onConfirmationOpen}
+                >
                   {t('button.deleteSelected')} ({selected.length})
                 </Button>
               </Stack>
@@ -172,7 +189,7 @@ const DataTable = <T extends ItemBase>({
                       </TableCell>
                       {columns.map((column, columnIndex) => {
                         const value = row[column.id] as string;
-                        const label = column.renderValue ? column.renderValue(value) : value;
+                        const label = column.renderValue ? column.renderValue(value, row, index) : value;
 
                         return (
                           <TableCell

@@ -90,8 +90,7 @@
   },
   "table": {
     "orderById": "Order by default",
-    "orderAscending": "Order ascending",
-    "orderDescending": "Order descending",
+    "order": "Reorder",
     "detail": "Detail"
   }
 }
