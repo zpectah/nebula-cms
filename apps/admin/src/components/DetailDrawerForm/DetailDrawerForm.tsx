@@ -125,7 +125,7 @@ const DetailDrawerForm = <T extends FieldValues>({
             <Content gap={2}>{isLoading ? <PreloaderBase /> : children}</Content>
             <Footer {...barProps}>
               <Stack direction="row" gap={2}>
-                <Button type="submit" variant="contained" disabled={isLoading || !isValid || !isDirty}>
+                <Button type="submit" variant="contained" disabled={isLoading}>
                   {isNew ? t('button.create') : t('button.update')}
                 </Button>
                 <Button onClick={() => form?.reset()} variant="outlined" disabled={!isDirty}>

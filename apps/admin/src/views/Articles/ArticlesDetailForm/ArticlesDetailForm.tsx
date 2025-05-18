@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useWatch } from 'react-hook-form';
 import { Stack, Divider } from '@mui/material';
 import { articlesTypeKeys } from '@core';
 import config from '../../../config';
@@ -11,11 +12,13 @@ import {
   FormField,
   ControlledSwitch,
   ControlledWysiwygEditor,
+  ControlledDatePicker,
 } from '../../../components';
 import { useSelectItems } from '../../../hooks';
 import { IArticlesDetailForm } from './types';
 import { useArticlesDetailForm } from './useArticlesDetailForm';
 import { ArticlesDetailFormKeys, ArticlesDetailFormDefaults, ArticlesDetailFormValidations } from './constants';
+import { useMemo } from 'react';
 
 const ArticlesDetailForm = () => {
   const { id } = useParams();
@@ -23,6 +26,8 @@ const ArticlesDetailForm = () => {
   const { form, isLoading, locale, locales, onLocaleChange, onSubmit, onDelete, title } = useArticlesDetailForm(id);
 
   const typeOptionsItems = useSelectItems(Object.keys(articlesTypeKeys));
+  const type = useWatch({ name: ArticlesDetailFormKeys.type, control: form.control });
+  const isTypeEvent = useMemo(() => type === articlesTypeKeys.event, [type]);
 
   return (
     <DetailDrawerForm<IArticlesDetailForm>
@@ -66,6 +71,29 @@ const ArticlesDetailForm = () => {
         <ControlledSwitch name={ArticlesDetailFormKeys.active} label={t('label.active')} />
       </Stack>
       <Divider />
+      <Stack direction="row" gap={2} sx={{ width: '100%', display: isTypeEvent ? 'flex' : 'none' }}>
+        <ControlledDatePicker
+          name={ArticlesDetailFormKeys.startDate}
+          label={t('label.startDate')}
+          fieldProps={{
+            isRequired: true,
+            boxProps: {
+              sx: { width: '50%' },
+            },
+          }}
+        />
+        <ControlledDatePicker
+          name={ArticlesDetailFormKeys.endDate}
+          label={t('label.endDate')}
+          fieldProps={{
+            isRequired: true,
+            boxProps: {
+              sx: { width: '50%' },
+            },
+          }}
+        />
+      </Stack>
+      <Divider sx={{ display: isTypeEvent ? 'block' : 'none' }} />
       <DetailLocaleToggle locales={locales} locale={locale} onChange={onLocaleChange} />
       {locales.map((loc: string) => {
         const fieldPrefix = `${ArticlesDetailFormKeys.locale}[${loc}]`;

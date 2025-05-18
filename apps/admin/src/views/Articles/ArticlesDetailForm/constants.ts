@@ -9,6 +9,8 @@ export const ArticlesDetailFormKeys = {
   content: 'content',
   active: 'active',
   deleted: 'deleted',
+  startDate: 'startDate',
+  endDate: 'endDate',
 } as const;
 
 export const ArticlesDetailFormDefaults = {
@@ -19,6 +21,8 @@ export const ArticlesDetailFormDefaults = {
   content: '',
   active: true,
   deleted: false,
+  startDate: null,
+  endDate: null,
 };
 
 export const ArticlesDetailFormValidations = {
@@ -33,4 +37,6 @@ export const ArticlesDetailFormValidations = {
   content: {
     minLength: 5,
   },
+  startDate: {},
+  endDate: {},
 };

@@ -1,6 +1,6 @@
 import { Controller } from 'react-hook-form';
 import { Box, BoxProps } from '@mui/material';
-import { useControlledFormContext } from '../form/ControlledForm.context';
+import { useControlledFormContext } from '../form';
 import Switch, { SwitchProps } from './Switch';
 
 export interface ControlledSwitchProps extends SwitchProps {

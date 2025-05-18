@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Controller } from 'react-hook-form';
-import { useControlledFormContext } from '../form/ControlledForm.context';
+import { useControlledFormContext } from '../form';
 import WysiwygEditor, { WysiwygEditorProps } from './WysiwygEditor';
 
 export interface ControlledWysiwygEditorProps extends Omit<WysiwygEditorProps, 'value' | 'onChange'> {}

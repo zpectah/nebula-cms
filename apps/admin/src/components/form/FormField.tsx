@@ -1,21 +1,14 @@
 import { useMemo, cloneElement, ReactElement } from 'react';
 import { RegisterOptions } from 'react-hook-form';
-import { Box, Stack, BoxProps } from '@mui/material';
 import { useControlledFormContext } from './ControlledForm.context';
-import { FieldLabel } from './FieldLabel';
-import { FieldMessage, FieldErrorMessage } from './FieldMessage';
+import FormFieldBase, { FormFieldBaseProps } from './FormFieldBase';
 
-interface FormFieldProps {
-  name: string;
+interface FormFieldProps extends FormFieldBaseProps {
   field: ReactElement;
   fieldId?: string;
   testId?: string;
-  label?: string;
-  isRequired?: boolean;
   isDisabled?: boolean;
   fieldOptions?: RegisterOptions;
-  helperTexts?: string[];
-  boxProps?: Partial<BoxProps>;
 }
 
 const FormField = (props: FormFieldProps) => {
@@ -41,27 +34,22 @@ const FormField = (props: FormFieldProps) => {
   }
 
   return (
-    <Box {...boxProps}>
-      {label && (
-        <FieldLabel htmlFor={name}>
-          {label}
-          {isRequired && ' *'}
-        </FieldLabel>
-      )}
-      <Stack>
-        {cloneElement(field, {
-          ...form?.register(name, { required: isRequired, ...fieldOptions }),
-          disabled: isDisabled,
-          id: fieldId,
-          error: !!fieldErrorMessage,
-          'data-test-id': testId,
-        } as object)}
-        <Stack direction="column">
-          {fieldErrorMessage && <FieldErrorMessage>{fieldErrorMessage}</FieldErrorMessage>}
-          {helperTexts?.map((text, i) => <FieldMessage key={i}>{text}</FieldMessage>)}
-        </Stack>
-      </Stack>
-    </Box>
+    <FormFieldBase
+      name={name}
+      label={label}
+      helperTexts={helperTexts}
+      boxProps={boxProps}
+      errorMessage={fieldErrorMessage}
+      isRequired={isRequired}
+    >
+      {cloneElement(field, {
+        ...form?.register(name, { required: isRequired, ...fieldOptions }),
+        disabled: isDisabled,
+        id: fieldId,
+        error: !!fieldErrorMessage,
+        'data-test-id': testId ?? name,
+      } as object)}
+    </FormFieldBase>
   );
 };
 

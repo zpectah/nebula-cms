@@ -1,17 +1,23 @@
 export { default as ControlledSwitch } from './ControlledSwitch';
 export { default as ControlledWysiwygEditor } from './ControlledWysiwygEditor';
+export { default as ControlledDatePicker } from './ControlledDatePicker';
 export { default as Input } from './Input';
 export { default as Select } from './Select';
 export { default as Switch } from './Switch';
 export { default as Email } from './Email';
 export { default as Password } from './Password';
 export { default as WysiwygEditor } from './WysiwygEditor';
+export { default as Number } from './Number';
+export { default as DatePicker } from './DatePicker';
 
 export type { ControlledSwitchProps } from './ControlledSwitch';
 export type { ControlledWysiwygEditorProps } from './ControlledWysiwygEditor';
+export type { ControlledDatePickerProps } from './ControlledDatePicker';
 export type { InputProps } from './Input';
 export type { SelectProps } from './Select';
 export type { SwitchProps } from './Switch';
 export type { EmailProps } from './Email';
 export type { PasswordProps } from './Password';
 export type { WysiwygEditorProps } from './WysiwygEditor';
+export type { NumberProps } from './Number';
+export type { DatePickerProps } from './DatePicker';

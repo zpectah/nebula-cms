@@ -16,4 +16,6 @@ export const getNewArticlesItem = (locales: string[]): INewArticlesItem => ({
   }, {}),
   active: ArticlesDetailFormDefaults.active,
   deleted: ArticlesDetailFormDefaults.deleted,
+  startDate: ArticlesDetailFormDefaults.startDate,
+  endDate: ArticlesDetailFormDefaults.endDate,
 });

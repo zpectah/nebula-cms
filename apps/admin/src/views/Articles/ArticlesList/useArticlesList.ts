@@ -5,11 +5,6 @@ export const useArticlesList = () => {
 
   const { data: items, isLoading } = articlesQuery;
 
-  const deleteRowHandler = (id: number) => {
-    // TODO
-    console.log('on delete row', id);
-  };
-
   const deleteSelectedHandler = (selected: number[]) => {
     // TODO
     console.log('on delete selected', selected);
@@ -18,7 +13,6 @@ export const useArticlesList = () => {
   return {
     items: items ?? [],
     isLoading,
-    onDeleteRow: deleteRowHandler,
     onDeleteSelected: deleteSelectedHandler,
   };
 };

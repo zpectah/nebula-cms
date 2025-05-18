@@ -15,6 +15,8 @@ export interface ArticlesDetail extends ArticlesItem {
       content: string;
     };
   };
+  startDate?: string | null;
+  endDate?: string | null;
 }
 
 export type Articles = ArticlesItem[];

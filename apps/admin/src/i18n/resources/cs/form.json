@@ -9,7 +9,9 @@
       "maxString": "Maximum number of characters allowed exceeded",
       "minNumber": "The value is below the minimum allowed value",
       "maxNumber": "The value is above the maximum allowed value.",
-      "notNumber": "Value must be a number"
+      "notNumber": "Value must be a number",
+      "invalidDate": "Invalid date",
+      "endDateBeforeStartDate": "endDateBeforeStartDate"
     }
   },
   "label": {
@@ -19,7 +21,9 @@
     "description": "Popisek",
     "content": "Obsah",
     "active": "Aktivní",
-    "deleted": "Smazané"
+    "deleted": "Smazané",
+    "startDate": "Začátek",
+    "endDate": "Konec"
   },
   "placeholder": {},
   "options": {
