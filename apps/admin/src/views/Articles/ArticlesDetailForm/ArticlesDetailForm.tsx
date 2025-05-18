@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useWatch } from 'react-hook-form';
@@ -6,19 +7,18 @@ import { articlesTypeKeys } from '@core';
 import config from '../../../config';
 import {
   DetailDrawerForm,
-  DetailLocaleToggle,
   Input,
   Select,
   FormField,
   ControlledSwitch,
   ControlledWysiwygEditor,
   ControlledDatePicker,
+  LocalesContainerField,
 } from '../../../components';
 import { useSelectItems } from '../../../hooks';
 import { IArticlesDetailForm } from './types';
 import { useArticlesDetailForm } from './useArticlesDetailForm';
 import { ArticlesDetailFormKeys, ArticlesDetailFormDefaults, ArticlesDetailFormValidations } from './constants';
-import { useMemo } from 'react';
 
 const ArticlesDetailForm = () => {
   const { id } = useParams();
@@ -41,6 +41,14 @@ const ArticlesDetailForm = () => {
       isLoading={isLoading}
       isDebug
       onDelete={onDelete}
+      sidebar={
+        <>
+          Náhled: ...
+          <br />
+          <br />
+          Přílohy: ...
+        </>
+      }
     >
       <FormField
         name={ArticlesDetailFormKeys.name}
@@ -93,46 +101,50 @@ const ArticlesDetailForm = () => {
           }}
         />
       </Stack>
-      <Divider sx={{ display: isTypeEvent ? 'block' : 'none' }} />
-      <DetailLocaleToggle locales={locales} locale={locale} onChange={onLocaleChange} />
-      {locales.map((loc: string) => {
-        const fieldPrefix = `${ArticlesDetailFormKeys.locale}[${loc}]`;
+      {isTypeEvent && <Divider />}
+      <LocalesContainerField
+        locales={locales}
+        locale={locale}
+        onChange={onLocaleChange}
+        renderLocale={(loc) => {
+          const fieldPrefix = `${ArticlesDetailFormKeys.locale}[${loc}]`;
 
-        return (
-          <Stack key={loc} gap={2} sx={{ display: loc !== locale ? 'none' : 'flex' }}>
-            <FormField
-              name={`${fieldPrefix}.${ArticlesDetailFormKeys.title}`}
-              label={t('label.title')}
-              field={
-                <Input
-                  defaultValue={ArticlesDetailFormDefaults.title}
-                  slotProps={{ htmlInput: { ...ArticlesDetailFormValidations.title } }}
-                  fullWidth
-                />
-              }
-              isRequired
-            />
-            <FormField
-              name={`${fieldPrefix}.${ArticlesDetailFormKeys.description}`}
-              label={t('label.description')}
-              field={
-                <Input
-                  defaultValue={ArticlesDetailFormDefaults.description}
-                  slotProps={{ htmlInput: { ...ArticlesDetailFormValidations.description } }}
-                  rows={5}
-                  multiline
-                  fullWidth
-                />
-              }
-            />
-            <ControlledWysiwygEditor
-              name={`${fieldPrefix}.${ArticlesDetailFormKeys.content}`}
-              label={t('label.content')}
-              isRequired
-            />
-          </Stack>
-        );
-      })}
+          return (
+            <Stack key={loc} gap={2} sx={{ display: loc !== locale ? 'none' : 'flex' }}>
+              <FormField
+                name={`${fieldPrefix}.${ArticlesDetailFormKeys.title}`}
+                label={t('label.title')}
+                field={
+                  <Input
+                    defaultValue={ArticlesDetailFormDefaults.title}
+                    slotProps={{ htmlInput: { ...ArticlesDetailFormValidations.title } }}
+                    fullWidth
+                  />
+                }
+                isRequired
+              />
+              <FormField
+                name={`${fieldPrefix}.${ArticlesDetailFormKeys.description}`}
+                label={t('label.description')}
+                field={
+                  <Input
+                    defaultValue={ArticlesDetailFormDefaults.description}
+                    slotProps={{ htmlInput: { ...ArticlesDetailFormValidations.description } }}
+                    rows={5}
+                    multiline
+                    fullWidth
+                  />
+                }
+              />
+              <ControlledWysiwygEditor
+                name={`${fieldPrefix}.${ArticlesDetailFormKeys.content}`}
+                label={t('label.content')}
+                isRequired
+              />
+            </Stack>
+          );
+        }}
+      />
     </DetailDrawerForm>
   );
 };

@@ -32,6 +32,9 @@ interface DetailDrawerFormProps<T extends FieldValues> extends WithChildren {
   isLoading?: boolean;
   isDebug?: boolean;
   onDelete?: () => void;
+  sidebar?: ReactNode;
+  sidebarWidth?: string;
+  width?: string;
 }
 
 const Container = styled(Stack)(({ theme }) => ({
@@ -42,13 +45,21 @@ const Container = styled(Stack)(({ theme }) => ({
 const Header = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
-const Content = styled(Stack)(({ theme }) => ({
+const ContentWrapper = styled(Stack)(({ theme }) => ({
   flex: '1',
+  position: 'relative',
+  overflowX: 'hidden',
+  overflowY: 'auto',
+}));
+const Content = styled(Stack)(({ theme }) => ({
   position: 'relative',
   overflowX: 'hidden',
   overflowY: 'auto',
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
+}));
+const Sidebar = styled(Content)(({ theme }) => ({
+  paddingLeft: 0,
 }));
 const Footer = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -65,6 +76,9 @@ const DetailDrawerForm = <T extends FieldValues>({
   drawerProps,
   isLoading,
   onDelete,
+  sidebar,
+  sidebarWidth,
+  width,
 }: DetailDrawerFormProps<T>) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -81,6 +95,9 @@ const DetailDrawerForm = <T extends FieldValues>({
   const isNew = id === newItemKey;
   const isValid = !!form?.formState.isValid;
   const isDirty = form?.formState.isDirty;
+
+  const drawerWidth = width ?? !!sidebar ? '920px' : '750px';
+  const finalSidebarWidth = sidebarWidth ?? '200px';
 
   const barProps: Partial<StackProps> = {
     direction: 'row',
@@ -100,7 +117,7 @@ const DetailDrawerForm = <T extends FieldValues>({
             sx: {
               width: {
                 xs: '100vw',
-                md: '750px',
+                md: drawerWidth,
               },
             },
           },
@@ -122,7 +139,22 @@ const DetailDrawerForm = <T extends FieldValues>({
                 <CloseIcon />
               </IconButton>
             </Header>
-            <Content gap={2}>{isLoading ? <PreloaderBase /> : children}</Content>
+            <ContentWrapper direction="row" gap={2}>
+              {isLoading ? (
+                <PreloaderBase />
+              ) : (
+                <>
+                  <Content flex={1} gap={2}>
+                    {children}
+                  </Content>
+                  {sidebar && (
+                    <Sidebar gap={2} sx={{ width: finalSidebarWidth }}>
+                      {sidebar}
+                    </Sidebar>
+                  )}
+                </>
+              )}
+            </ContentWrapper>
             <Footer {...barProps}>
               <Stack direction="row" gap={2}>
                 <Button type="submit" variant="contained" disabled={isLoading}>
