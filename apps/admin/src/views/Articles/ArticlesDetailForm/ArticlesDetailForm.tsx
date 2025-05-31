@@ -47,6 +47,8 @@ const ArticlesDetailForm = () => {
           <br />
           <br />
           Přílohy: ...
+          <br />
+          <br />
         </>
       }
     >

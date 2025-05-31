@@ -43,7 +43,8 @@ const Container = styled(Stack)(({ theme }) => ({
 }));
 
 const Header = styled(Stack)(({ theme }) => ({
-  padding: theme.spacing(2),
+  padding: `${theme.spacing(1.125)} ${theme.spacing(2)}`,
+  borderBottom: `1px solid ${theme.palette.divider}`,
 }));
 const ContentWrapper = styled(Stack)(({ theme }) => ({
   flex: '1',
@@ -52,9 +53,7 @@ const ContentWrapper = styled(Stack)(({ theme }) => ({
   overflowY: 'auto',
 }));
 const Content = styled(Stack)(({ theme }) => ({
-  position: 'relative',
-  overflowX: 'hidden',
-  overflowY: 'auto',
+  paddingTop: theme.spacing(2),
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
 }));
@@ -63,6 +62,7 @@ const Sidebar = styled(Content)(({ theme }) => ({
 }));
 const Footer = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(2),
+  borderTop: `1px solid ${theme.palette.divider}`,
 }));
 
 const DetailDrawerForm = <T extends FieldValues>({
@@ -96,8 +96,9 @@ const DetailDrawerForm = <T extends FieldValues>({
   const isValid = !!form?.formState.isValid;
   const isDirty = form?.formState.isDirty;
 
-  const drawerWidth = width ?? !!sidebar ? '920px' : '750px';
-  const finalSidebarWidth = sidebarWidth ?? '200px';
+  const finalSidebarWidth = sidebarWidth ?? '220px';
+  const drawerWidthBase = '680px';
+  const drawerWidth = width ?? !!sidebar ? `calc(${finalSidebarWidth} + ${drawerWidthBase})` : drawerWidthBase;
 
   const barProps: Partial<StackProps> = {
     direction: 'row',
@@ -139,7 +140,15 @@ const DetailDrawerForm = <T extends FieldValues>({
                 <CloseIcon />
               </IconButton>
             </Header>
-            <ContentWrapper direction="row" gap={2}>
+            <ContentWrapper
+              gap={2}
+              sx={{
+                flexDirection: {
+                  xs: 'column',
+                  md: 'row',
+                },
+              }}
+            >
               {isLoading ? (
                 <PreloaderBase />
               ) : (
@@ -148,7 +157,23 @@ const DetailDrawerForm = <T extends FieldValues>({
                     {children}
                   </Content>
                   {sidebar && (
-                    <Sidebar gap={2} sx={{ width: finalSidebarWidth }}>
+                    <Sidebar
+                      gap={2}
+                      sx={({ spacing }) => ({
+                        width: {
+                          xs: '100%',
+                          md: finalSidebarWidth,
+                        },
+                        paddingLeft: {
+                          xs: spacing(2),
+                          md: 0,
+                        },
+                        paddingBottom: {
+                          xs: spacing(2),
+                          md: 0,
+                        },
+                      })}
+                    >
                       {sidebar}
                     </Sidebar>
                   )}
