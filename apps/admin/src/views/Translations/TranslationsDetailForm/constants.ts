@@ -1,14 +1,24 @@
+import { translationsTypeKeys } from '@core';
+
 export const TranslationsDetailFormKeys = {
   type: 'type',
   name: 'name',
+  label: 'label',
+  active: 'active',
+  deleted: 'deleted',
 } as const;
 
 export const TranslationsDetailFormDefault = {
-  type: 'default',
+  type: translationsTypeKeys.default,
   name: '',
+  label: '',
+  active: true,
+  deleted: false,
 };
 
 export const TranslationsDetailFormValidations = {
   type: {},
-  name: {},
+  name: {
+    minLength: 5,
+  },
 };

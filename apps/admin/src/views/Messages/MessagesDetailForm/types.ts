@@ -1,4 +1,3 @@
-export interface IMessagesDetailForm {
-  type: string;
-  name: string;
-}
+import { MessagesDetail } from '@core';
+
+export interface IMessagesDetailForm extends MessagesDetail {}

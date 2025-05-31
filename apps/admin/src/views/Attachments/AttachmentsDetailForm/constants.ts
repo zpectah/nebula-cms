@@ -1,14 +1,22 @@
+import { attachmentsTypeKeys } from '@core';
+
 export const AttachmentsDetailFormKeys = {
   type: 'type',
   name: 'name',
+  active: 'active',
+  deleted: 'deleted',
 } as const;
 
 export const AttachmentsDetailFormDefault = {
-  type: 'default',
+  type: attachmentsTypeKeys.default,
   name: '',
+  active: true,
+  deleted: false,
 };
 
 export const AttachmentsDetailFormValidations = {
   type: {},
-  name: {},
+  name: {
+    minLength: 5,
+  },
 };

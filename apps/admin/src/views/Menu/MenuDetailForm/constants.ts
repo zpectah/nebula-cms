@@ -1,14 +1,22 @@
+import { menuTypeKeys } from '@core';
+
 export const MenuDetailFormKeys = {
   type: 'type',
   name: 'name',
+  active: 'active',
+  deleted: 'deleted',
 } as const;
 
 export const MenuDetailFormDefault = {
-  type: 'default',
+  type: menuTypeKeys.default,
   name: '',
+  active: true,
+  deleted: false,
 };
 
 export const MenuDetailFormValidations = {
   type: {},
-  name: {},
+  name: {
+    minLength: 5,
+  },
 };
