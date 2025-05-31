@@ -1,4 +1,5 @@
 import { ToggleButtonGroup, ToggleButton } from '@mui/material';
+import config from '../../config';
 
 interface DetailLocaleToggleProps {
   locales: string[];
@@ -12,9 +13,9 @@ const DetailLocaleToggle = ({ locales, locale, onChange }: DetailLocaleTogglePro
       <ToggleButton
         key={loc}
         value={loc}
-        sx={({ spacing }) => ({ paddingLeft: spacing(1.75), paddingRight: spacing(1.75), textTransform: 'uppercase' })}
+        sx={({ spacing }) => ({ paddingLeft: spacing(1.75), paddingRight: spacing(1.75) })}
       >
-        {loc}
+        {config.locales.keys[loc]}
       </ToggleButton>
     ))}
   </ToggleButtonGroup>

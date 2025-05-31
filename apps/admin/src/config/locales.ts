@@ -6,6 +6,6 @@ export const locales = {
     cs: 'Česky',
   } as Record<string, string>,
 
-  // Pokud je obsah nastaven obsah jako vícejazyčný, jinak nastavit 'cs'
+  // Pokud je obsah nastaven jako vícejazyčný, jinak nastavit 'cs'
   content: 'en',
 };

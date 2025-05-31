@@ -16,9 +16,10 @@ import {
   LocalesContainerField,
 } from '../../../components';
 import { useSelectItems } from '../../../hooks';
+import { getTypedDate } from '../../../utils';
 import { IArticlesDetailForm } from './types';
-import { useArticlesDetailForm } from './useArticlesDetailForm';
 import { ArticlesDetailFormKeys, ArticlesDetailFormDefaults, ArticlesDetailFormValidations } from './constants';
+import { useArticlesDetailForm } from './useArticlesDetailForm';
 
 const ArticlesDetailForm = () => {
   const { id } = useParams();
@@ -27,6 +28,7 @@ const ArticlesDetailForm = () => {
 
   const typeOptionsItems = useSelectItems(Object.keys(articlesTypeKeys));
   const type = useWatch({ name: ArticlesDetailFormKeys.type, control: form.control });
+  const startDate = useWatch({ name: ArticlesDetailFormKeys.startDate, control: form.control });
   const isTypeEvent = useMemo(() => type === articlesTypeKeys.event, [type]);
 
   return (
@@ -72,7 +74,12 @@ const ArticlesDetailForm = () => {
             defaultValue={ArticlesDetailFormDefaults.type}
             slotProps={{ input: { ...ArticlesDetailFormValidations.type } }}
             items={typeOptionsItems}
-            sx={{ width: '250px' }}
+            sx={{
+              width: {
+                xs: '100%',
+                md: '250px',
+              },
+            }}
           />
         }
         isRequired
@@ -81,14 +88,30 @@ const ArticlesDetailForm = () => {
         <ControlledSwitch name={ArticlesDetailFormKeys.active} label={t('label.active')} />
       </Stack>
       <Divider />
-      <Stack direction="row" gap={2} sx={{ width: '100%', display: isTypeEvent ? 'flex' : 'none' }}>
+      <Stack
+        direction="row"
+        gap={2}
+        sx={{
+          width: '100%',
+          display: isTypeEvent ? 'flex' : 'none',
+          flexDirection: {
+            xs: 'column',
+            sm: 'row',
+          },
+        }}
+      >
         <ControlledDatePicker
           name={ArticlesDetailFormKeys.startDate}
           label={t('label.startDate')}
           fieldProps={{
             isRequired: true,
             boxProps: {
-              sx: { width: '50%' },
+              sx: {
+                width: {
+                  xs: '100%',
+                  sm: '50%',
+                },
+              },
             },
           }}
         />
@@ -98,9 +121,15 @@ const ArticlesDetailForm = () => {
           fieldProps={{
             isRequired: true,
             boxProps: {
-              sx: { width: '50%' },
+              sx: {
+                width: {
+                  xs: '100%',
+                  sm: '50%',
+                },
+              },
             },
           }}
+          minDate={getTypedDate(startDate)}
         />
       </Stack>
       {isTypeEvent && <Divider />}

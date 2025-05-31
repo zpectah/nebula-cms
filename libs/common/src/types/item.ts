@@ -6,3 +6,9 @@ export interface ItemBase {
   created?: string;
   updated?: string;
 }
+
+export interface ItemBaseLocales<T> {
+  locale: {
+    [k: string]: T;
+  };
+}

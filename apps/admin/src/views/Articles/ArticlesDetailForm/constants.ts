@@ -21,8 +21,8 @@ export const ArticlesDetailFormDefaults = {
   content: '',
   active: true,
   deleted: false,
-  startDate: null,
-  endDate: null,
+  startDate: undefined,
+  endDate: undefined,
 };
 
 export const ArticlesDetailFormValidations = {
